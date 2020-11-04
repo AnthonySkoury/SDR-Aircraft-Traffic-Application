@@ -14,7 +14,7 @@ class DataRecordSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class AircraftDataSerializer(serializers.ModelSerializer):
-    datarecords = DataRecordSerializer(many=True)
+    datarecord_set = DataRecordSerializer(many=True)
     class Meta:
         model = Aircraft
-        fields = ['icao', 'name', 'aircraft_type', 'datarecords']
+        fields = ['icao', 'name', 'aircraft_type', 'datarecord_set']

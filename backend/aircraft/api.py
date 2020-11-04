@@ -2,6 +2,8 @@ from aircraft.models import Aircraft, DataRecord
 from rest_framework import viewsets, permissions
 from .serializers import AircraftSerializer, DataRecordSerializer, AircraftDataSerializer
 
+# objects.filter(etc) put in what you want 
+
 class AircraftViewSet(viewsets.ModelViewSet):
     queryset = Aircraft.objects.all()
     serializer_class = AircraftSerializer
@@ -17,8 +19,8 @@ class DataRecordViewSet(viewsets.ModelViewSet):
     ]
 
 class AircraftDataViewSet(viewsets.ModelViewSet):
-    queryset = Aircraft.objects.all()
-    serializer_class = AircraftSerializer
+    queryset = Aircraft.objects.prefetch_related('datarecord_set').all()
+    serializer_class = AircraftDataSerializer
     permission_classes = [
         permissions.AllowAny
     ]
