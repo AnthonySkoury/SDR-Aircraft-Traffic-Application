@@ -1,8 +1,10 @@
 from aircraft.models import Aircraft, DataRecord
 from rest_framework import viewsets, permissions
-from .serializers import AircraftSerializer, DataRecordSerializer, AircraftDataSerializer
+from rest_framework.response import Response
 
-# objects.filter(etc) put in what you want 
+from .serializers import AircraftSerializer, DataRecordSerializer, AircraftDataSerializer
+from django.db.models import Prefetch
+
 
 class AircraftViewSet(viewsets.ModelViewSet):
     queryset = Aircraft.objects.all()
@@ -18,9 +20,30 @@ class DataRecordViewSet(viewsets.ModelViewSet):
         permissions.AllowAny
     ]
 
-class AircraftDataViewSet(viewsets.ModelViewSet):
-    queryset = Aircraft.objects.prefetch_related('datarecord_set').all()
+class AircraftDataViewSet(viewsets.ViewSet):
+    # queryset = Aircraft.objects.prefetch_related(Prefetch('datarecord_set', queryset=DataRecord.objects.order_by('-timestamp'))).all()
     serializer_class = AircraftDataSerializer
     permission_classes = [
         permissions.AllowAny
     ]
+
+    # Get aircraft joined with data
+    def list(self, request):
+        data_query=DataRecord.objects.all()
+
+        icaos = self.request.GET.get('icao', None)
+        if icaos:
+            data_query = data_query.filter(icao=icaos)
+        
+        exact_date = self.request.GET.get('exact-date', None)
+        if exact_date:
+            data_query = data_query.filter(timestamp=exact_date)
+
+        data_query = data_query.order_by('-timestamp')
+
+        queryset = Aircraft.objects.prefetch_related(Prefetch('datarecord_set', queryset=data_query)).all()
+
+        serializer = AircraftDataSerializer(queryset, many=True)
+
+        return Response(serializer.data)
+

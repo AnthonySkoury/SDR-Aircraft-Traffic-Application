@@ -10,7 +10,8 @@ class Aircraft(models.Model):
         db_table = 'aircraft_table'
 
 class DataRecord(models.Model):
-    timestamp = models.DateTimeField(primary_key=True, auto_now=False, auto_now_add=False)
+    data_record_id = models.AutoField(primary_key=True, editable=False)
+    timestamp = models.DateTimeField(auto_now=False, auto_now_add=False)
     icao = models.ForeignKey(Aircraft, on_delete=models.CASCADE)
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
     latitude = models.DecimalField(max_digits=8, decimal_places=6)
