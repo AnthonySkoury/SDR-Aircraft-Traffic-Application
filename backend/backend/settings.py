@@ -78,8 +78,8 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'aircraft-db',
-        'USER': 'aircraft-db',
+        'NAME': 'aircraft_db',
+        'USER': 'aircraft_db',
         'PASSWORD': 'raspberry',
         'HOST': 'localhost',
         'PORT': '5432',
