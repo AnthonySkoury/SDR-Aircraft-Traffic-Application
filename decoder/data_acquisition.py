@@ -3,19 +3,28 @@ import json
 import requests
 from requests.exceptions import HTTPError
 
- t = 0
+t = 0
+tot = 0
+incr = 10
+s_p = " seconds passed"
 
 try:
-	print('Requesting data from localhost')
-	url = 'http://127.0.0.1:8080/data.json'
-	feedback = requests.get(url)
-	acquired_data = feedback.json()
-	while True:
-		t = t + 1
-		print(acquired_data)
-		#print(feedback.status_code)
-		print(t + 'seconds passed')
-		time.sleep(10)
+    print('Requesting data from localhost')
+    url = 'http://127.0.0.1:8080/data.json'
+    feedback = requests.get(url)
+    acquired_data = feedback.json()
+    while True:
+        tot += incr
+        print(acquired_data)
+        send_back = json.dumps(acquired_data, indent = 13)
 
-except Exception as e:
-    print(f'Error while parsing URL occurred: {e}')
+        with open("acquired_data.json","w") as outfile:
+            outfile.write(send_back)
+
+        print(str(tot) + s_p)
+        time.sleep(incr)
+
+except HTTPError as http_err:
+    print(f'HTTP error event occured: {http_err}')
+except Exception as err:
+    print(f'Miscellaneous erorr occured: {err}')
