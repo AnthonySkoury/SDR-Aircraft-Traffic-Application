@@ -7,6 +7,37 @@ from django.db.models import Prefetch
 
 # Viewsets are used as the interface between the users with the data models/tables
 
+
+def get_query(request):
+    
+    data_query=DataRecord.objects.all()
+
+    # Query param for getting records for an exact ICAO
+    icaos = request.GET.get('icao', None)
+    if icaos:
+        data_query = data_query.filter(icao=icaos)
+    
+    # Query param for getting records for an exact timestamp
+    exact_date = request.GET.get('exact-date', None)
+    if exact_date:
+        data_query = data_query.filter(timestamp=exact_date)
+
+    # Query param for getting records in a range of timestamps
+    start_time = request.GET.get('start-time', None)
+    end_time = request.GET.get('end-time', None)
+    if start_time and end_time:
+        data_query = data_query.filter(timestamp__range=(start_time, end_time))
+
+    # Query param for getting records in a long and lat range
+    x1 = request.GET.get('lat1', None)
+    y1 = request.GET.get('long1', None)
+    x2 = request.GET.get('lat1', None)
+    y2 = request.GET.get('long2', None)
+    if x1 and y1 and x2 and y2:
+        data_query = data_query.filter(latitude__range=(x1, x2), longitude__range=(y1, y2))
+    
+    return data_query
+
 # Aircraft viewset with CRUD operation defaults from ModelViewSet
 class AircraftViewSet(viewsets.ModelViewSet):
     queryset = Aircraft.objects.all()
@@ -40,17 +71,7 @@ class AircraftDataViewSet(viewsets.ViewSet):
     # Query parameters defined here
     # Get aircraft joined with data
     def list(self, request):
-        data_query=DataRecord.objects.all()
-
-        # Query param for getting records for an exact ICAO
-        icaos = self.request.GET.get('icao', None)
-        if icaos:
-            data_query = data_query.filter(icao=icaos)
-        
-        # Query param for getting records for an exact timestamp
-        exact_date = self.request.GET.get('exact-date', None)
-        if exact_date:
-            data_query = data_query.filter(timestamp=exact_date)
+        data_query = get_query(self.request)
 
         # Order data by descending timestamps by default
         data_query = data_query.order_by('-timestamp')

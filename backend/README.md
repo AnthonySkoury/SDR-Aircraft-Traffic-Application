@@ -17,12 +17,32 @@ For more info on the Django REST framework [click here](https://www.django-rest-
 
 For more info on the Django [click here](https://www.djangoproject.com/).
 
+## Database
+
+To work with the Django backend, first a PostgreSQL database is required. The recommended approach would be to use a PostgreSQL Docker Container.
+
+Docker can be set up on the Raspberry Pi or on another machine.
+
+[To install on Raspberry Pi](https://docs.docker.com/engine/install/debian/)
+
+[To install on Mac/Windows/Linux PC](https://docs.docker.com/get-docker/)
+
+To run a PostgreSQL Container in Docker, the image needs to be installed.
+
+[PostgreSQL Image](https://hub.docker.com/_/postgres)
+
+The following command can be used to set up the Docker Container. Note that the password can be changed but the name and port should stay consistent as they are the expected ones in the Django database settings. Django will use those to connect to the database.
+
+```bash
+git clone https://github.com/AnthonySkoury/Air-Traffic-System.git
+```
+
 ## Running the backend
 
 Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/AnthonySkoury/Air-Traffic-System.git
+docker run --name aircraft_db -e POSTGRES_USER=aircraft_db -e POSTGRES_DB=aircraft_db -e POSTGRES_PASSWORD=raspberry -d -p 5432:5432 postgres
 ```
 
 Get set up with the virtual environment for dependencies:
