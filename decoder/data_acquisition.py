@@ -33,7 +33,7 @@ try:
             data1 = {}
             data2 = {}
             date_map = eut.parsedate(last_mod)
-            date_map_f = str(date_map[0]) + '-' + str(date_map[1]) + '-' + str(date_map[2]) + 'T' + str(date_map[3]+ 4) + ':' + str(date_map[4]) + ':' + str(date_map[5]) + 'GMT'
+            date_map_f = str(date_map[0]) + '-' + str(date_map[1]) + '-' + str(date_map[2]) + 'T' + str(date_map[3]) + ':' + str(date_map[4]) + ':' + str(date_map[5]) + 'GMT'
             print(date_map_f)
 
             data1['icao'] = i['hex']
