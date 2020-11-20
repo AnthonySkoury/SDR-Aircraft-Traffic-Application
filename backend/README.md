@@ -19,6 +19,7 @@ For more info on the Django [click here](https://www.djangoproject.com/).
 
 ## Database
 
+### Setup
 To work with the Django backend, first a PostgreSQL database is required. The recommended approach would be to use a PostgreSQL Docker Container.
 
 Docker can be set up on the Raspberry Pi or on another machine.
@@ -34,7 +35,25 @@ To run a PostgreSQL Container in Docker, the image needs to be installed.
 The following command can be used to set up the Docker Container. Note that the password can be changed but the name and port should stay consistent as they are the expected ones in the Django database settings. Django will use those to connect to the database.
 
 ```bash
-git clone https://github.com/AnthonySkoury/Air-Traffic-System.git
+docker run --name aircraft_db -e POSTGRES_USER=aircraft_db -e POSTGRES_DB=aircraft_db -e POSTGRES_PASSWORD=raspberry -d -p 5432:5432 postgres
+```
+### Backups
+
+Since the database is separate from Django, it can be backed up/dumped through PostgreSQL pg_dump wherever it is hosted. If it is hosted in a Docker container, the following command can be used to dump the database into a SQL file.
+
+```bash
+docker exec -it aircraft_db pg_dump --username aircraft_db [--password raspberry] aircraft_db > dump.sql
+```
+To load the database in Docker the following command can be used.
+
+```bash
+docker exec -i aircraft_db psql -U aircraft_db aircraft_db < dump.sql
+```
+
+Alternatively, the database can be dumped into JSON format via the manage functions provided by Django. The following command will dump it into a nicely formatted json file.
+
+```bash
+python manage.py dumpdata aircraft --indent=4 --natural-foreign --natural-primary > data.json
 ```
 
 ## Running the backend
@@ -42,7 +61,7 @@ git clone https://github.com/AnthonySkoury/Air-Traffic-System.git
 Clone the repository to your local machine:
 
 ```bash
-docker run --name aircraft_db -e POSTGRES_USER=aircraft_db -e POSTGRES_DB=aircraft_db -e POSTGRES_PASSWORD=raspberry -d -p 5432:5432 postgres
+git clone https://github.com/AnthonySkoury/Air-Traffic-System.git
 ```
 
 Get set up with the virtual environment for dependencies:

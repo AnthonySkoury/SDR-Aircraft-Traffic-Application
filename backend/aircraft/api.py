@@ -84,4 +84,3 @@ class AircraftDataViewSet(viewsets.ViewSet):
 
         # Send response
         return Response(serializer.data)
-
