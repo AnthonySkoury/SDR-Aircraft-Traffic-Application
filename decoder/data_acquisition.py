@@ -4,6 +4,11 @@ import json
 import requests
 from requests.exceptions import HTTPError
 
+import urllib.request
+from urllib.request import urlopen
+from datetime import datetime
+import email.utils as eut
+
 t = 0
 tot = 0
 incr = 1
@@ -16,15 +21,21 @@ url_3 = 'http://localhost:8080/api/datarecord/'
 
 try:
     print('Requesting data from localhost')
-    feedback = requests.get(url)
-    acquired_data = feedback.json()
-    while True:
+    while True:    
+        feedback = requests.get(url)
+        acquired_data = feedback.json()
+        last_mod = feedback.headers['last-modified']
         tot += incr
         data_1 = []
         data_2 = []
+        date_map = []
         for i in acquired_data:
             data1 = {}
             data2 = {}
+            date_map = eut.parsedate(last_mod)
+            date_map_f = str(date_map[0]) + '-' + str(date_map[1]) + '-' + str(date_map[2]) + 'T' + str(date_map[3]+ 4) + ':' + str(date_map[4]) + ':' + str(date_map[5]) + 'GMT'
+            print(date_map_f)
+
             data1['icao'] = i['hex']
             data2['icao'] = i['hex']
             #data1['squawk'] = i['squawk']
@@ -39,12 +50,16 @@ try:
             data2['ground_speed'] = i['speed']
             #data2['messages'] = i['messages']
             #data2['seen'] = i['seen']
+            data1['last-modified'] = date_map_f
+            data2['last-modified'] = date_map_f
+
             data_1.append(data1)
             data_2.append(data2)
             send_back_1 = requests.post(url_2,data=data1)
             send_back_2 = requests.post(url_3,data=data2)
 
-        time.sleep(incr)
+        #time.sleep(incr)
+        print('One round done')
 
 except HTTPError as http_err:
     print(f'HTTP error event occured: {http_err}')
