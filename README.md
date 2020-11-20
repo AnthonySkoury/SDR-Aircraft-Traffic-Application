@@ -10,6 +10,19 @@ An air traffic system that uses an ADS-B receiver to obtain data.
 
 ### Prerequisites
 
+## Hardware Setup
+### Prerequisites
+* Raspberry Pi with Raspbian
+  * To set up Raspberry Pi: 
+    * Install [Raspberry Pi Imager](https://www.raspberrypi.org/software/) 
+    * Follow this guide to flash Raspberry Pi OS onto your SD card: https://www.raspberrypi.org/documentation/installation/installing-images/
+### Setting up RTL-SDR and Dump1090
+* Install rtl-sdr lib using `sudo apt-get install rtl-sdr librtlsdr-dev`
+* `git clone https://github.com/antirez/dump1090`
+* cd into dump1090 directory
+* `make`
+* Run `dump1090 --interactive` to start retrieving ADS-B data
+
 ## General Usage
 * [Docker](https://www.docker.com/)
 
