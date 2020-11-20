@@ -14,7 +14,7 @@ class NavBar extends React.Component {
     return (
       <>
       <Navbar bg="dark" variant="dark">
-        <Navbar.Brand href="#ats">Air Trffic System</Navbar.Brand>
+        <Navbar.Brand href="#ats">Air Traffic System</Navbar.Brand>
         <Nav className="mr-auto">
           <Nav.Link href="#home">Feature 1</Nav.Link>
           <Nav.Link href="#features">Feature 2</Nav.Link>
@@ -25,8 +25,6 @@ class NavBar extends React.Component {
           <Button variant="outline-info">Search</Button>
         </Form>
       </Navbar>
-      <br />
-
       </>
     );
   }
