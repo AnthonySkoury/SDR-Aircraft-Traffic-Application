@@ -39,15 +39,21 @@ docker run --name aircraft_db -e POSTGRES_USER=aircraft_db -e POSTGRES_DB=aircra
 ```
 ### Backups
 
-Since the database is separate from Django, it can be backed up/dumped through PostgreSQL pg_dump wherever it is hosted. If it is hosted in a Docker container, the following command can be used to dump the database into a SQL file.
+Since the database is separate from Django, it can be backed up/dumped through PostgreSQL pg_dump wherever it is hosted. If it is hosted in a Docker container, the following command can be used to dump the database into a SQL file. Note that it zips the file to save space and also appends a timestamp.
 
 ```bash
-docker exec -it aircraft_db pg_dump --username aircraft_db [--password raspberry] aircraft_db > dump.sql
+docker exec -t aircraft_db pg_dumpall -c -U aircraft_db | gzip > dump_$(date +"%Y-%m-%d_%H_%M_%S").gz
 ```
-To load the database in Docker the following command can be used.
+The following command can be used to unzip the dump file (must use generated timestamp).
 
 ```bash
-docker exec -i aircraft_db psql -U aircraft_db aircraft_db < dump.sql
+gunzip dump_timestamp.gz
+```
+
+To load the database in Docker the following command can be used after unzipping the backup.
+
+```bash
+cat dump_unzipped_file | docker exec -i aircraft_db psql -U aircraft_db -d aircraft_db
 ```
 
 Alternatively, the database can be dumped into JSON format via the manage functions provided by Django. The following command will dump it into a nicely formatted json file.
@@ -55,6 +61,21 @@ Alternatively, the database can be dumped into JSON format via the manage functi
 ```bash
 python manage.py dumpdata aircraft --indent=4 --natural-foreign --natural-primary > data.json
 ```
+
+### PostgreSQL interface
+
+To start the database Docker container in bash the following command can be used.
+
+```bash
+docker exec -it aircraft_db bash
+```
+
+To start psql to execute SQL statements and queries, the following command can be used.
+
+```bash
+docker exec -it aircraft_db psql -U aircraft_db -d aircraft_db
+```
+
 
 ## Running the backend
 
