@@ -1,9 +1,11 @@
 from aircraft.models import Aircraft, DataRecord
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, status, renderers
 from rest_framework.response import Response
+# from rest_framework.decorators import action
 
 from .serializers import AircraftSerializer, DataRecordSerializer, AircraftDataSerializer
 from django.db.models import Prefetch
+# from django.http import FileResponse
 
 # Viewsets are used as the interface between the users with the data models/tables
 
@@ -38,6 +40,15 @@ def get_query(request):
     
     return data_query
 
+class PassthroughRenderer(renderers.BaseRenderer):
+    """
+        Return data as-is. View should supply a Response.
+    """
+    media_type = ''
+    format = ''
+    def render(self, data, accepted_media_type=None, renderer_context=None):
+        return data
+
 # Aircraft viewset with CRUD operation defaults from ModelViewSet
 class AircraftViewSet(viewsets.ModelViewSet):
     queryset = Aircraft.objects.all()
@@ -49,6 +60,19 @@ class AircraftViewSet(viewsets.ModelViewSet):
         permissions.AllowAny
     ]
 
+    # Override Create method to allow serialization of many or single objects when inserting
+    def create(self, request, pk=None, company_pk=None, project_pk=None):
+        # Check if the request data is a list or a single object
+        is_many = isinstance(request.data, list)
+
+        serializer = self.get_serializer(data=request.data, many=is_many)
+        serializer.is_valid(raise_exception=True)
+        # Insert data after serializing
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        # Return response
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
 # Data Record viewset with CRUD operation defaults from ModelViewSet
 class DataRecordViewSet(viewsets.ModelViewSet):
     queryset = DataRecord.objects.all()
@@ -59,6 +83,19 @@ class DataRecordViewSet(viewsets.ModelViewSet):
     permission_classes = [
         permissions.AllowAny
     ]
+
+    # Override Create method to allow serialization of many or single objects when inserting
+    def create(self, request, pk=None, company_pk=None, project_pk=None):
+        # Check if the request data is a list or a single object
+        is_many = isinstance(request.data, list)
+
+        serializer = self.get_serializer(data=request.data, many=is_many)
+        serializer.is_valid(raise_exception=True)
+        # Insert data after serializing
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        # Return response
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 # Aircraft Data joined with Data Record Viewset with only list operation allowed
 class AircraftDataViewSet(viewsets.ViewSet):
@@ -84,3 +121,21 @@ class AircraftDataViewSet(viewsets.ViewSet):
 
         # Send response
         return Response(serializer.data)
+
+# class DownloadDBViewSet(viewsets.ReadOnlyModelViewSet):
+#     queryset = Aircraft.objects.prefetch_related(Prefetch('datarecord_set', queryset=DataRecord.objects.order_by('-timestamp'))).all()
+#     serializer_class = AircraftSerializer
+
+#     @action(methods=['get'], detail=True, renderer_classes=(PassthroughRenderer,))
+#     def download(self, *args, **kwargs):
+#         instance = self.get_object()
+
+#         # get an open file handle (I'm just using a file attached to the model for this example):
+#         file_handle = instance.file.open()
+
+#         # send file
+#         response = FileResponse(file_handle, content_type='whatever')
+#         response['Content-Length'] = instance.file.size
+#         response['Content-Disposition'] = 'attachment; filename="%s"' % instance.file.name
+
+#         return response

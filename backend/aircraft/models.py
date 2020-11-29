@@ -6,7 +6,8 @@ from django.db import models
 class Aircraft(models.Model):
     # Data fields
     icao = models.CharField(primary_key=True, max_length=6)
-    callsign = models.CharField(blank=True, max_length=6)
+    callsign = models.CharField(blank=True, max_length=7)
+    squawk = models.CharField(blank=True, max_length=4)
     name = models.CharField(blank=True, max_length=30)
     aircraft_type = models.CharField(blank=True, max_length=30)
 
