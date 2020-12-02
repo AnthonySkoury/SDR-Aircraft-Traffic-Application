@@ -2,8 +2,8 @@
 
 Air-Traffic Dump1090 Receiving & Parsing Script
 ===
-[![Python Version](https://img.shields.io/badge/Python-3.7-brightblue.svg)(https://python.org)
-[![Dump1090 Version](https://img.shields.io/badge/Dump1090-black.svg)(https://github.com/antirez/dump1090)
+[![Python Version](https://img.shields.io/badge/Python-3.7-brightblue.svg)](https://python.org)
+[![Dump1090 Version](https://img.shields.io/badge/Dump1090-black.svg)](https://github.com/antirez/dump1090)
 
 
 
