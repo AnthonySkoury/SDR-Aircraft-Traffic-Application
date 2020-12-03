@@ -71,34 +71,34 @@ class Aircraft(models.Model):
     # Six digit hexadecimal unique aircraft identifier
     icao = models.CharField(primary_key=True, max_length=6)
     # Aircraft callsign
-    callsign = models.CharField(blank=True, max_length=7)
+    callsign = models.CharField(null=True, blank=True, max_length=7)
     # Aircraft squawk transponder code
-    squawk = models.CharField(blank=True, max_length=4)
+    squawk = models.CharField(null=True, blank=True, max_length=4)
 
     # Fields not broadcasted and can be looked up via the web (user can send update request later)
 
     # Airline name or private owner 
-    name = models.CharField(blank=True, max_length=30)
+    name = models.CharField(null=True, blank=True, max_length=30)
     # The aircraft model’s ICAO type code
-    aircraft_type = models.CharField(blank=True, max_length=30)
+    aircraft_type = models.CharField(null=True, blank=True, max_length=30)
     # Aircraft registration number
-    registration_number = models.CharField(blank=True, max_length=30)
+    registration_number = models.CharField(null=True, blank=True, max_length=30)
     # A description of the aircraft’s model
-    aircraft_model = models.CharField(blank=True, max_length=100)
+    aircraft_model = models.CharField(null=True, blank=True, max_length=100)
     # Aircraft manufacturer's name
-    aircraft_manufacturer = models.CharField(blank=True, max_length=50)
+    aircraft_manufacturer = models.CharField(null=True, blank=True, max_length=50)
     # Year an aircraft was manufactuered
-    aircraft_year = models.CharField(blank=True, max_length=4)
+    aircraft_year = models.CharField(null=True, blank=True, max_length=4)
     # The aircraft’s construction or serial number
-    construction_number = models.CharField(blank=True, max_length=30)
+    construction_number = models.CharField(null=True, blank=True, max_length=30)
     # The name of the aircraft's operator
-    aircraft_operator = models.CharField(blank=True, max_length=30)
+    aircraft_operator = models.CharField(null=True, blank=True, max_length=30)
     # General Aircraft Type
-    aircraft_species = models.CharField(blank=True, choices=species_choices, max_length=30)
+    aircraft_species = models.CharField(null=True, blank=True, choices=species_choices, max_length=30)
     # Type of engine the aircraft uses
-    engine_type = models.CharField(blank=True, choices=engine_type_choices, max_length=30)
+    engine_type = models.CharField(null=True, blank=True, choices=engine_type_choices, max_length=30)
     # The placement of engines on the aircraft
-    engine_mount = models.CharField(blank=True, choices=engine_mount_choices, max_length=30)
+    engine_mount = models.CharField(null=True, blank=True, choices=engine_mount_choices, max_length=30)
 
     class Meta:
         # Table name in Postgresql
@@ -119,22 +119,22 @@ class DataRecord(models.Model):
     # Aircraft's latitude above ground
     latitude = models.DecimalField(max_digits=8, decimal_places=6)
     # Boolean that is True if the received aircraft position is valid
-    valid_position = models.BooleanField(blank=True)
+    valid_position = models.BooleanField()
     # Aircraft ground speed in knots
     ground_speed = models.DecimalField(max_digits=20, decimal_places=5)
     # Altitude in feet at standard pressure
     altitude = models.DecimalField(max_digits=20, decimal_places=5)
 
     # Vertical speed in feet per minute
-    vertical_rate = models.DecimalField(blank=True, max_digits=20, decimal_places=5)
+    vertical_rate = models.DecimalField(null=True, blank=True, max_digits=20, decimal_places=5)
     # Aircraft’s track angle across the ground clockwise from 0° north.
-    track = models.DecimalField(blank=True, max_digits=10, decimal_places=5)
+    track = models.DecimalField(null=True, blank=True, max_digits=10, decimal_places=5)
     # Boolean that is True if the received aircraft track is valid
-    valid_track = models.BooleanField(blank=True)
+    valid_track = models.BooleanField(null=True, blank=True)
     # The number of seconds that the aircraft has been tracked for.  Will change as aircraft roams between receiving servers.
-    tracked_seconds = models.CharField(blank=True, max_length=30)
+    tracked_seconds = models.CharField(null=True, blank=True, max_length=30)
     # The count of messages received for the aircraft.  Will change as aircraft roams between receiving servers.
-    count_messages = models.CharField(blank=True, max_length=30)
+    count_messages = models.CharField(null=True, blank=True, max_length=30)
 
     
     class Meta:

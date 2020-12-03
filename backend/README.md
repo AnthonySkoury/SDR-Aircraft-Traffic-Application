@@ -149,6 +149,14 @@ python manage.py makemigrations aircraft
 python manage.py migrate aircraft
 ```
 
+### PostgreSQL on Windows
+To view the database in Windows I recommend the Postgres guide [here](https://www.microfocus.com/documentation/idol/IDOL_12_0/MediaServer/Guides/html/English/Content/Getting_Started/Configure/_TRN_Set_up_PostgreSQL.htm). Inside the pgAdmin 4 browser interface or psql command line, create a database named "aircraft_db" then the dump file ran in Docker can viewed after importing it with the following command.
+
+```bash
+psql -U postgres aircraft_db < dumpfile
+```
+
+
 ## Running the backend
 
 Clone the repository to your local machine:
