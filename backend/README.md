@@ -37,6 +37,19 @@ The following command can be used to set up the Docker Container. Note that the 
 ```bash
 docker run --name aircraft_db -e POSTGRES_USER=aircraft_db -e POSTGRES_DB=aircraft_db -e POSTGRES_PASSWORD=raspberry -d -p 5432:5432 postgres
 ```
+
+### Common Docker Commands
+The following commands are to start, stop, and delete the database Docker Container respectively.
+```bash
+docker start aircraft_db
+```
+```bash
+docker stop aircraft_db
+```
+```bash
+docker rm aircraft_db
+```
+
 ### Backups
 
 Since the database is separate from Django, it can be backed up/dumped through PostgreSQL pg_dump wherever it is hosted. If it is hosted in a Docker container, the following command can be used to dump the database into a SQL file. Note that it zips the file to save space and also appends a timestamp.
@@ -62,6 +75,25 @@ Alternatively, the database can be dumped into JSON format via the manage functi
 python manage.py dumpdata aircraft --indent=4 --natural-foreign --natural-primary > data.json
 ```
 
+### Reseting the Database
+Either Django or PostgreSQL can be used to delete the database tables or data.
+
+To delete the database tables in Django the following can be ran using the Django manager. (Note the user must have psql installed locally for this option)
+```bash
+python manage.py dbshell
+>>> DROP TABLE aircraft_aircraft_table
+>>> DROP TABLE aircraft_data_record_table
+```
+
+One of the options for deleting the database data without the structure/table models is through the Django manager. The following commands can be ran. (Note that for this option psql is not required to be installed locally)
+
+```python
+python manage.py shell
+>>> from aircraft.models import Aircraft
+>>> Aircraft.objects.all().delete()
+```
+
+
 ### PostgreSQL interface
 
 To start the database Docker container in bash the following command can be used.
@@ -76,6 +108,46 @@ To start psql to execute SQL statements and queries, the following command can b
 docker exec -it aircraft_db psql -U aircraft_db -d aircraft_db
 ```
 
+Below are some basic sample queries and SQL commands that might be ran
+
+Get all aircraft
+```sql
+SELECT * FROM aircraft_table ;
+```
+
+Get the number of aircraft
+```sql
+SELECT COUNT(*) FROM aircraft_table ;
+```
+
+Get all data records
+```sql
+SELECT * FROM data_record_table ;
+```
+
+Get the number of data records
+```sql
+SELECT COUNT(*) FROM data_record_table ;
+```
+
+Get all aircraft joined with their data records
+```sql
+SELECT * FROM aircraft_table, data_record_table ;
+```
+
+To reset the data record table auto incrementing field the following SQL command can be ran
+```sql
+ALTER SEQUENCE data_record_table_data_record_id_seq RESTART WITH 1 ;
+```
+
+### Modifying the database in Django
+
+After modifying the database model in models.py the following commands must be ran with the Django manager to apply the changes to the database.
+
+```bash
+python manage.py makemigrations aircraft
+python manage.py migrate aircraft
+```
 
 ## Running the backend
 

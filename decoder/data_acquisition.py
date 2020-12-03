@@ -12,7 +12,7 @@ import email.utils as eut
 t = 0
 tot = 0
 incr = 1
-s_p = " seconds passed"
+s_p = ' seconds passed'
 t_s = 0
 
 url = 'http://127.0.0.1:8080/data.json'
@@ -48,23 +48,22 @@ try:
         for i in acquired_data:
             data1 = {}
             data2 = {}
-            data1["icao"] = i["hex"]
-            data2["icao"] = i["hex"]
+            data1['icao'] = i['hex']
+            data2['icao'] = i['hex']
             data1['squawk'] = i['squawk']
-            data1["callsign"] = i["flight"].rstrip()
-            # print(data1["callsign"], len(data1["callsign"]))
-            data2["latitude"] = i["lat"]
-            data2["longitude"] = i["lon"]
-            #data2['validposition'] = i['validposition']
-            data2["altitude"] = i["altitude"]
-            #data2['vert_rate'] = i['vert_rate']
-            #data2['track'] = i['track']
-            #data2['validtrack'] = i['validtrack']
-            data2["ground_speed"] = i["speed"]
-            #data2['messages'] = i['messages']
-            #data2['seen'] = i['seen']
-            # data1['last-modified'] = date_map_f
-            data2["timestamp"] = date_map_f
+            data1['callsign'] = i['flight'].rstrip()
+            # print(data1['callsign'], len(data1['callsign']))
+            data2['latitude'] = i['lat']
+            data2['longitude'] = i['lon']
+            data2['valid_position'] = bool(i['validposition'])
+            data2['altitude'] = i['altitude']
+            data2['vertical_rate'] = i['vert_rate']
+            data2['track'] = i['track']
+            data2['valid_track'] = bool(i['validtrack'])
+            data2['ground_speed'] = i['speed']
+            data2['count_messages'] = i['messages']
+            data2['tracked_seconds'] = i['seen']
+            data2['timestamp'] = date_map_f
 
             data_1.append(data1)
             data_2.append(data2)
@@ -72,17 +71,17 @@ try:
             # send each object at a time for now since there's currently a bug sending a list of objects
 
             # check if airplane is in set to see if it's necessary to add the aircraft
-            if(data1["icao"] not in icaos):
+            if(data1['icao'] not in icaos):
                 # request to add the aircraft and add it into the set
                 send_back_1 = requests.post(url=url_2, json=data1)
-                icaos.add(data1["icao"])
-                if(send_back_1.reason == "Bad Request"):
-                    print("Aircraft POST Response: ", send_back_1.status_code, send_back_1.reason, send_back_1.content)
+                icaos.add(data1['icao'])
+                if(send_back_1.reason == 'Bad Request'):
+                    print('Aircraft POST Response: ', send_back_1.status_code, send_back_1.reason, send_back_1.content)
 
             # request to add data record
             send_back_2 = requests.post(url=url_3, json=data2)
-            if(send_back_2.reason == "Bad Request"):
-                print("DataRecord POST Response: ", send_back_2.status_code, send_back_2.reason, send_back_2.content)  
+            if(send_back_2.reason == 'Bad Request'):
+                print('DataRecord POST Response: ', send_back_2.status_code, send_back_2.reason, send_back_2.content)  
 
         # send_back_1 = requests.post(url=url_2, json=data_1)
         # send_back_2 = requests.post(url=url_3, json=data_2)
