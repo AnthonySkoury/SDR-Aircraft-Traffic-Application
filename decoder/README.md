@@ -48,5 +48,12 @@ What data is stored
 
 * Timestamp
 
+Notes
+---
 
+* Dump1090 original repository was modified to include timestamp feature in GMT time
+
+* Optimization from serial to parallel to be determined
+
+*
 
