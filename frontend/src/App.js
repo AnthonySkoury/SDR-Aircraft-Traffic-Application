@@ -16,7 +16,7 @@ function App() {
         <Col fluid xs={12} md={8}>
           <MapContainer/>
         </Col>
-        <Col xs={6} md={2}>
+        <Col xs={6} md={4}>
           <AircraftData/>
         </Col>
       </Row>

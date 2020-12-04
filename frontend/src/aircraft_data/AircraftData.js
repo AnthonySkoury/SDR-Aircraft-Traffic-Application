@@ -21,17 +21,45 @@ class AircraftData extends React.Component {
   }
 
   async componentDidMount() {
+    console.log('starting')
+    console.log('time', new Date().toISOString()	)
+    let date = new Date()
+    // date.setMilliseconds(0);
+    let start = date.toISOString()
+    let temp = date
+    temp.setSeconds(temp.getSeconds()-1)
+    let end = temp.toISOString()
+    console.log('string is',"http://192.168.0.105:8000/api/aircraftdata/?start-time=" + start + "&end-time="+end)
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/aircraft/")
-      const data = await res.json();
-      console.log(data)
-      console.log('adding',data)
-      this.setState({
-        data
-      });
-    } catch (e) {
-      console.log(e);
+      this.myInterval = setInterval(async () => {
+        let date = new Date()
+        // date.setMilliseconds(0);
+        let start = date.toISOString()
+        let temp = date
+        temp.setSeconds(temp.getSeconds()-1)
+        let end = temp.toISOString()
+        // const res = await fetch("http://192.168.0.105:8000/api/aircraftdata/?start-time=" + start + "&end-time="+end)
+        console.log('string is',"http://192.168.0.105:8000/api/aircraftdata/?start-time=" + start + "&end-time="+end)
+        // const res = await fetch("http://192.168.0.105:8000/api/aircraftdata/?start-time=2020-12-04T21:10:09Z&end-time=2020-12-04T21:11:49Z")
+        const res = await fetch("http://192.168.0.105:8000/api/aircraftdata/")
+        const data = await res.json();
+        // const filteredData = this.state.result.filter(data => new Date(data.timestamp) >= new Date("09/30/2019") && new Date(data.timestamp) <= new Date("10/07/2019"))
+        // const filteredData =  data.filter(d => new Date().toISOString() <= d.start-time)
+        console.log('adding',data)
+        // console.log('example',data[0].datarecord_set[0].timestamp)
+        console.log('time', new Date())
+
+        this.setState({
+          data
+        })
+      }, 10000);
+    } catch(e) {
+      console.log('error', e);
     }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.myInterval)
   }
 
   render() {
@@ -39,18 +67,21 @@ class AircraftData extends React.Component {
       <Container fluid>
         <div>Aircraft Data</div>
         <br/>
-          <div>
+          <div >
             {this.state.data.map(d => {
               return (
                   <div key={d.icao}>
                     <Row fluid>
                       <Col>
                         <div>ICAO: {d.icao}</div>
-                        <div>Callsign: {d.callsign}</div>
+                        <div>Altitude: {d.datarecord_set[0].altitude}</div>
+                        <div>Track: {d.datarecord_set[0].track}</div>
                       </Col>
                       <Col>
                         <div>Aircraft Type: {d.aircraft}</div>
-                        <div>Name: {d.name}</div>
+                        <div>Ground Speed: {d.datarecord_set[0].ground_speed}</div>
+                        <div>Latitude: {d.datarecord_set[0].latitude}</div>
+                        <div>Longitude: {d.datarecord_set[0].longitude}</div>
                       </Col>
                     </Row>
                     <br/>
