@@ -4,7 +4,7 @@
 * Run `npx create-react-app my-app` to install React
 * To install the required dependencies, run `npm install`
 * If needed, install the Google Maps API with `npm install google-map-react`
-* Follow this [guide] (https://developers.google.com/maps/documentation/embed/get-api-key) to get your own API key and add it to the frontend/src/map/Map.js file.
+* Follow this [guide](https://developers.google.com/maps/documentation/embed/get-api-key) to get your own API key and add it to the frontend/src/map/Map.js file.
 * To start the web app, use `npm start` and it should start on localhost:3000
 
 # Getting Started with Create React App
