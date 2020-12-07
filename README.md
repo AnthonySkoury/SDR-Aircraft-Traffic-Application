@@ -21,7 +21,18 @@ An air traffic system that uses an ADS-B receiver to obtain data.
 * `git clone https://github.com/antirez/dump1090`
 * cd into dump1090 directory
 * `make`
-* Run `dump1090 --interactive` to start retrieving ADS-B data
+* If issues persist with Makefile follow the steps [here](https://github.com/antirez/dump1090/issues/142), in summary:
+  * Run `pkg-config --libs librtlsdr --debug` to find the path of `librtlsdr.pc` on Raspbian it is most likely `/usr/lib/arm-linux-gnueabihf/pkgconfig/librtlsdr.pc` and on Linux it is most likely `/usr/lib/x86_64-linux-gnu/pkgconfig/librtlsdr.pc`
+  * Change the file to to following:
+  
+    `prefix=/usr`
+
+    `exec_prefix=${prefix}`
+
+    `libdir=${exec_prefix}/lib`
+    
+    `includedir=${prefix}/include`
+* Run `dump1090 --interactive --net` to start retrieving ADS-B data
 
 ## General Usage
 * [Docker](https://www.docker.com/)
@@ -88,7 +99,7 @@ I use [Git](https://git-scm.com/) for versioning.
 
 ## Authors
 
-* **Anthony Skoury** - *Computer Engineering* - [My GitHub](https://github.com/AnthonySkoury)
+* **Anthony Skoury** - *Computer Engineer* - [My GitHub](https://github.com/AnthonySkoury)
 * **Randall Cheng** - *Electrical Engineer, Computer Engineer*
 * **Alan Wong**
 
