@@ -197,3 +197,9 @@ Backend located at **127.0.0.1:8000** or http://localhost:8000 .
 * [serializers.py](https://github.com/AnthonySkoury/Air-Traffic-System/blob/main/backend/aircraft/serializers.py) Serializers used to convert the SQL data into JSON or JSON into SQL
 * [api.py](https://github.com/AnthonySkoury/Air-Traffic-System/blob/main/backend/aircraft/api.py) API for viewsets which are used as the interface between the users with the data models/tables
 * [urls.py](https://github.com/AnthonySkoury/Air-Traffic-System/blob/main/backend/aircraft/urls.py) Defined URLs for API
+
+## Acknowledgments
+Thank you for the creators as well as documentation/tutorials for all the libraries/packages used. Notable ones include:
+* [psycopg](https://www.psycopg.org/) PostgreSQL adapter for Python
+* [Django Rest Framework](https://www.django-rest-framework.org/) Django toolkit for building Web APIs
+* [Django Cors Headers](https://github.com/adamchainz/django-cors-headers) Django app that adds Cross-Origin Resource Sharing (CORS) headers to responses

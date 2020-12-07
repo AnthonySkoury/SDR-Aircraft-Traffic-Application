@@ -1,21 +1,21 @@
 # Air-Traffic-System
 An air traffic system that uses an ADS-B receiver to obtain data.
 
-## Getting Started
+## Note
 
-
-
-#### Note
-
-
-### Prerequisites
-
-## Hardware Setup
+## General Usage Setup
 ### Prerequisites
 * Raspberry Pi with Raspbian
   * To set up Raspberry Pi: 
     * Install [Raspberry Pi Imager](https://www.raspberrypi.org/software/) 
     * Follow this guide to flash Raspberry Pi OS onto your SD card: https://www.raspberrypi.org/documentation/installation/installing-images/
+
+* Docker
+  * Docker can be set up on the Raspberry Pi or on another machine.
+    * [To install on Raspberry Pi](https://docs.docker.com/engine/install/debian/)
+    * [To install on Mac/Windows/Linux PC](https://docs.docker.com/get-docker/)
+
+
 ### Setting up RTL-SDR and Dump1090
 * Install rtl-sdr lib using `sudo apt-get install rtl-sdr librtlsdr-dev`
 * `git clone https://github.com/antirez/dump1090`
@@ -25,23 +25,31 @@ An air traffic system that uses an ADS-B receiver to obtain data.
   * Run `pkg-config --libs librtlsdr --debug` to find the path of `librtlsdr.pc` on Raspbian it is most likely `/usr/lib/arm-linux-gnueabihf/pkgconfig/librtlsdr.pc` and on Linux it is most likely `/usr/lib/x86_64-linux-gnu/pkgconfig/librtlsdr.pc`
   * Change the file to to following:
   
-    `prefix=/usr`
+    ```bash
+    prefix=/usr
 
-    `exec_prefix=${prefix}`
+    exec_prefix=${prefix}
 
-    `libdir=${exec_prefix}/lib`
+    libdir=${exec_prefix}/lib
     
-    `includedir=${prefix}/include`
+    includedir=${prefix}/include```
+    ```
 * Run `dump1090 --interactive --net` to start retrieving ADS-B data
 
-## General Usage
-* [Docker](https://www.docker.com/)
+### Setting up the database and backend
+* Please follow the backend README [here](https://github.com/AnthonySkoury/Air-Traffic-System/blob/main/backend/README.md)
+
+### Setting up the frontend
+* Please follow the frontend README [here](https://github.com/AnthonySkoury/Air-Traffic-System/blob/main/frontend/README.md)
 
 ## Development
+
+### Tools Used
 * [Git](https://git-scm.com/) for version control
 * [Django](https://www.djangoproject.com/) for backend
 * [React](https://reactjs.org/) for frontend
-
+* [Docker](https://www.docker.com/) for database host
+* [PostgreSQL](https://www.postgresql.org/) for database used
 
 Knowledge and skills needed
 
@@ -62,32 +70,6 @@ To get a developer environment running please do the following:
 
 * Clone the repository via [Git](https://help.github.com/en/articles/cloning-a-repository)
 
-#### Project Setup
-
-
-
-
-#### Demo
-
-## Building then running the program
-
-
-
-### Debugging the program
-
-
-
-## Deployment
-
-For deploying follow these steps
-
-
-
-
-
-## Built With
-
-
 
 ## Contributing
 
@@ -95,7 +77,7 @@ Please contact us or Peter Burke if you are interested in taking this project fu
 
 ## Versioning
 
-I use [Git](https://git-scm.com/) for versioning.
+We use [Git](https://git-scm.com/) for versioning.
 
 ## Authors
 
