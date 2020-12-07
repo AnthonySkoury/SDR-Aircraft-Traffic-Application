@@ -24,7 +24,7 @@ An air traffic system that uses an ADS-B receiver to obtain data.
 
 First [clone the repository](https://help.github.com/en/articles/cloning-a-repository) via Git using the following command
 ```bash
-git clone 
+git clone https://github.com/AnthonySkoury/Air-Traffic-System.git
 ```
 
 

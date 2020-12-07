@@ -55,5 +55,8 @@ Notes
 
 * Optimization from serial to parallel to be determined
 
-*
 
+
+Acknowledgments
+---
+Thank you to the creators for Dump1090 as well as the Python Requests library
