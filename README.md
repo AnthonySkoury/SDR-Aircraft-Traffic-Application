@@ -9,11 +9,23 @@ An air traffic system that uses an ADS-B receiver to obtain data.
   * To set up Raspberry Pi: 
     * Install [Raspberry Pi Imager](https://www.raspberrypi.org/software/) 
     * Follow this guide to flash Raspberry Pi OS onto your SD card: https://www.raspberrypi.org/documentation/installation/installing-images/
+    * Once the image is installed run the following commands
+    ```bash
+    sudo apt-get update
+    sudo apt-get install build-essential git -y
+    ```
 
 * Docker
   * Docker can be set up on the Raspberry Pi or on another machine.
     * [To install on Raspberry Pi](https://docs.docker.com/engine/install/debian/)
     * [To install on Mac/Windows/Linux PC](https://docs.docker.com/get-docker/)
+
+### Installing
+
+First [clone the repository](https://help.github.com/en/articles/cloning-a-repository) via Git using the following command
+```bash
+git clone 
+```
 
 
 ### Setting up RTL-SDR and Dump1090
@@ -27,12 +39,9 @@ An air traffic system that uses an ADS-B receiver to obtain data.
   
     ```bash
     prefix=/usr
-
     exec_prefix=${prefix}
-
     libdir=${exec_prefix}/lib
-    
-    includedir=${prefix}/include```
+    includedir=${prefix}/include
     ```
 * Run `dump1090 --interactive --net` to start retrieving ADS-B data
 
@@ -57,20 +66,6 @@ Knowledge and skills needed
 * General understanding of REST API framework
 * General Understanding of how SDRs work
 
-
-### Installing
-
-To get a developer environment running please do the following:
-
-#### Initial setup
-
-
-
-#### Creating the project
-
-* Clone the repository via [Git](https://help.github.com/en/articles/cloning-a-repository)
-
-
 ## Contributing
 
 Please contact us or Peter Burke if you are interested in taking this project further.
@@ -81,12 +76,12 @@ We use [Git](https://git-scm.com/) for versioning.
 
 ## Authors
 
-* **Anthony Skoury** - *Computer Engineer* - [My GitHub](https://github.com/AnthonySkoury)
+* **Anthony Skoury** - *Computer Engineer* - [My Website](https://anthonyskoury.github.io/)
 * **Randall Cheng** - *Electrical Engineer, Computer Engineer*
 * **Alan Wong**
 
 ## License
-This project is licensed under the APGL_v3 License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the APGL_v3 License - see the [LICENSE.md](https://github.com/AnthonySkoury/Air-Traffic-System/blob/main/LICENSE) file for details
 
 
 ## Acknowledgments
