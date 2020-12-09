@@ -1,4 +1,4 @@
-# If tag is shown then readme is incomplete
+# If tag is shown then readme is incomplete (80% complete)
 
 Air-Traffic Dump1090 Receiving & Parsing Script
 ===
@@ -8,7 +8,9 @@ Air-Traffic Dump1090 Receiving & Parsing Script
 Purpose
 ---
 
-To receive ADS-B data from each aircraft in the vicinity of the scan radius
+To receive ADS-B data from each aircraft in the vicinity of the scan radius.
+
+
 
 In the dump1090 directory being utilized, run the command:
 ---
