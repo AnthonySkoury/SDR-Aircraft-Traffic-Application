@@ -24,6 +24,8 @@ As the script is currently operating in Python 3.7, the command utilized to run 
 
 python3 data_acquisition.py
 
+***Run this command in a separate terminal window as Dump1090 interactive is running***
+
 Functions
 ---
 
