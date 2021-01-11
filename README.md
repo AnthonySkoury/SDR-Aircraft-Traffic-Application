@@ -46,10 +46,89 @@ git clone https://github.com/AnthonySkoury/Air-Traffic-System.git
 * Run `dump1090 --interactive --net` to start retrieving ADS-B data
 
 ### Setting up the database and backend
-* Please follow the backend README [here](https://github.com/AnthonySkoury/Air-Traffic-System/blob/main/backend/README.md)
+
+**Setting up and running the Database**
+* To work with the Django backend, first a PostgreSQL database is required. The recommended approach would be to use a PostgreSQL Docker Container.
+
+To run a PostgreSQL Container in Docker, the image needs to be installed.
+
+[PostgreSQL Image](https://hub.docker.com/_/postgres)
+
+The following command can be used to set up the Docker Container. Note that the password can be changed but the name and port should stay consistent as they are the expected ones in the Django database settings. Django will use those to connect to the database.
+
+```bash
+docker run --name aircraft_db -e POSTGRES_USER=aircraft_db -e POSTGRES_DB=aircraft_db -e POSTGRES_PASSWORD=raspberry -d -p 5432:5432 postgres
+```
+
+**Setting up and running the backend**
+* cd into the Air-Traffic-System directory
+ * `cd Air-Traffic-System/`
+ 
+Get set up with the virtual environment for dependencies:
+```bash
+pip install pipenv
+pipenv shell
+```
+
+Install the requirements from the Pipfile:
+
+```bash
+pipenv sync
+```
+Change directories into the backend to access the Django manager manage.py
+
+```bash
+cd Air-Traffic-System/backend/
+```
+
+Create the database:
+
+```bash
+python manage.py migrate
+```
+
+Run the development server:
+
+```bash
+python manage.py runserver
+```
+
+Backend located at **127.0.0.1:8000** or http://localhost:8000 .
+* For more information, please follow the backend README [here](https://github.com/AnthonySkoury/Air-Traffic-System/blob/main/backend/README.md)
 
 ### Setting up the frontend
-* Please follow the frontend README [here](https://github.com/AnthonySkoury/Air-Traffic-System/blob/main/frontend/README.md)
+** Installing Dependencies **
+* npm, Node.js, and the create-react-app is required to run the web app
+* Install Node.js and npm: https://www.npmjs.com/get-npm
+* Run `npx create-react-app my-app` to install React
+* To install the required dependencies, run `npm install`
+* If needed, install the Google Maps API with `npm install google-map-react`
+* Follow this [guide](https://developers.google.com/maps/documentation/embed/get-api-key) to get your own API key and add it to the frontend/src/map/Map.js file.
+
+* For more information, please follow the frontend README [here](https://github.com/AnthonySkoury/Air-Traffic-System/blob/main/frontend/README.md)
+
+### Running the decoder and backend
+`cd Air-Traffic-System`
+`pipenv shell`
+
+Run the development server:
+Change directory to Air-Traffic-System/backend
+```bash
+python manage.py runserver
+```
+
+Change directory to Air-Traffic-System/decoder/RTL-SDR/dump1090
+Run `dump1090 --interactive --net` to start dump1090
+
+In another window, change directory to Air-Traffic-System/decoder
+Run `python data_acquisition.py` to start the decoder
+
+ADS-B data should be recorded in the Django database
+You can view this in at 127.0.0.1:8000 or http://localhost:8000 in your browser
+
+### Starting the frontend
+In a new window change directory to Air-Traffic-System/frontend
+To start the web app, use `npm start` and it should be located on localhost:3000
 
 ## Development
 
