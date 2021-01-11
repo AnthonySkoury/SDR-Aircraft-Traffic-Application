@@ -60,9 +60,9 @@ The following command can be used to set up the Docker Container. Note that the 
 docker run --name aircraft_db -e POSTGRES_USER=aircraft_db -e POSTGRES_DB=aircraft_db -e POSTGRES_PASSWORD=raspberry -d -p 5432:5432 postgres
 ```
 
-**Setting up and running the backend**
+**Setting up the backend**
 * cd into the Air-Traffic-System directory
- * `cd Air-Traffic-System/`
+`cd Air-Traffic-System/`
  
 Get set up with the virtual environment for dependencies:
 ```bash
@@ -94,21 +94,30 @@ python manage.py runserver
 ```
 
 Backend located at **127.0.0.1:8000** or http://localhost:8000 .
-* For more information, please follow the backend README [here](https://github.com/AnthonySkoury/Air-Traffic-System/blob/main/backend/README.md)
+* For more information, please read the backend README [here](https://github.com/AnthonySkoury/Air-Traffic-System/blob/main/backend/README.md)
 
 ### Setting up the frontend
-** Installing Dependencies **
-* npm, Node.js, and the create-react-app is required to run the web app
-* Install Node.js and npm: https://www.npmjs.com/get-npm
-* Run `npx create-react-app my-app` to install React
-* To install the required dependencies, run `npm install`
-* If needed, install the Google Maps API with `npm install google-map-react`
-* Follow this [guide](https://developers.google.com/maps/documentation/embed/get-api-key) to get your own API key and add it to the frontend/src/map/Map.js file.
+**Installing Dependencies**
+npm, Node.js, and the create-react-app is required to run the web app
 
-* For more information, please follow the frontend README [here](https://github.com/AnthonySkoury/Air-Traffic-System/blob/main/frontend/README.md)
+Install Node.js and npm: https://www.npmjs.com/get-npm
+
+Run `npx create-react-app my-app` to install React
+
+To install the required dependencies, run `npm install`
+
+If needed, install the Google Maps API with `npm install google-map-react`
+
+Follow this [guide](https://developers.google.com/maps/documentation/embed/get-api-key) to get your own API key and add it to the frontend/src/map/Map.js file 
+
+Add the API key to the value of key in `bootstrapURLKeys={{ key: '' }}`.
+
+* For more information, please read the frontend README [here](https://github.com/AnthonySkoury/Air-Traffic-System/blob/main/frontend/README.md)
 
 ### Running the decoder and backend
+Start the virtual environment
 `cd Air-Traffic-System`
+
 `pipenv shell`
 
 Run the development server:
