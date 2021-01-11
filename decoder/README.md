@@ -1,4 +1,4 @@
-# If tag is shown then readme is incomplete (80% complete)
+# If tag is shown then readme is incomplete (90% complete)
 
 Air-Traffic Dump1090 Receiving & Parsing Script
 ===
@@ -16,6 +16,8 @@ In the dump1090 directory being utilized, run the command:
 ---
 
 ./dump1090 --interactive --net
+
+***Before running command, ensure the RTL-SDR module is connected through USB to the Raspberry Pi and is detected***
 
 As the script is currently operating in Python 3.7, the command utilized to run the script is:
 ---
