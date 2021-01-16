@@ -29,7 +29,7 @@ class AircraftData extends React.Component {
     let temp = date
     temp.setSeconds(temp.getSeconds()-1)
     let end = temp.toISOString()
-    console.log('string is',"http://192.168.0.105:8000/api/aircraftdata/?start-time=" + start + "&end-time="+end)
+    // console.log('string is',"http://192.168.0.105:8000/api/aircraftdata/?start-time=" + start + "&end-time="+end)
     try {
       this.myInterval = setInterval(async () => {
         let date = new Date()
@@ -39,20 +39,28 @@ class AircraftData extends React.Component {
         temp.setSeconds(temp.getSeconds()-1)
         let end = temp.toISOString()
         // const res = await fetch("http://192.168.0.105:8000/api/aircraftdata/?start-time=" + start + "&end-time="+end)
-        console.log('string is',"http://192.168.0.105:8000/api/aircraftdata/?start-time=" + start + "&end-time="+end)
+        // console.log('string is',"http://192.168.0.105:8000/api/aircraftdata/?start-time=" + start + "&end-time="+end)
         // const res = await fetch("http://192.168.0.105:8000/api/aircraftdata/?start-time=2020-12-04T21:10:09Z&end-time=2020-12-04T21:11:49Z")
-        const res = await fetch("http://192.168.0.105:8000/api/aircraftdata/")
-        const data = await res.json();
+        // const res = await fetch("http://192.168.0.105:8000/api/aircraftdata/")
+        
+        const res = await fetch("http://192.168.0.1:8000/api/aircraftdata/")
+        let data = await res.json();
         // const filteredData = this.state.result.filter(data => new Date(data.timestamp) >= new Date("09/30/2019") && new Date(data.timestamp) <= new Date("10/07/2019"))
         // const filteredData =  data.filter(d => new Date().toISOString() <= d.start-time)
         console.log('adding',data)
         // console.log('example',data[0].datarecord_set[0].timestamp)
         console.log('time', new Date())
-
+        let newdata
+        if(data.length > 6) {
+          newdata = data.slice(-6)
+        } else {
+          newdata = data
+        }
+        console.log('new data is',newdata)
         this.setState({
-          data
+          data: newdata
         })
-      }, 10000);
+      }, 2000);
     } catch(e) {
       console.log('error', e);
     }
@@ -64,11 +72,11 @@ class AircraftData extends React.Component {
 
   render() {
     return (
-      <Container fluid>
+      <Container fluid style={{ overflowY: 'auto', height: '41.5em', padding: '0', margin: '0', }}>
         <div>Aircraft Data</div>
         <br/>
           <div >
-            {this.state.data.map(d => {
+            {this.state.data && this.state.data.map(d => {
               return (
                   <div key={d.icao}>
                     <Row fluid>

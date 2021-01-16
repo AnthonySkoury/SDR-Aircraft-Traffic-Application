@@ -11,14 +11,13 @@ from django.db.models import Prefetch
 
 
 def get_query(request):
-    
     data_query=DataRecord.objects.all()
 
     # Query param for getting records for an exact ICAO
     icaos = request.GET.get('icao', None)
     if icaos:
         data_query = data_query.filter(icao=icaos)
-    
+
     # Query param for getting records for an exact timestamp
     exact_date = request.GET.get('exact-date', None)
     if exact_date:
@@ -37,7 +36,7 @@ def get_query(request):
     y2 = request.GET.get('long2', None)
     if x1 and y1 and x2 and y2:
         data_query = data_query.filter(latitude__range=(x1, x2), longitude__range=(y1, y2))
-    
+
     return data_query
 
 class PassthroughRenderer(renderers.BaseRenderer):
@@ -55,7 +54,7 @@ class AircraftViewSet(viewsets.ModelViewSet):
 
     # Serialize SQL into JSON or JSON into SQL
     serializer_class = AircraftSerializer
-    
+
     permission_classes = [
         permissions.AllowAny
     ]
