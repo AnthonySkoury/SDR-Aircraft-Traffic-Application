@@ -116,24 +116,36 @@ Add the API key to the value of key in `bootstrapURLKeys={{ key: '' }}`.
 
 ### Running the decoder and backend
 Start the virtual environment
+
 `cd Air-Traffic-System`
 
 `pipenv shell`
 
 Run the development server:
+
 Change directory to Air-Traffic-System/backend
 ```bash
 python manage.py runserver
 ```
 
 Change directory to Air-Traffic-System/decoder/RTL-SDR/dump1090
+
 Run `dump1090 --interactive --net` to start dump1090
 
 In another window, change directory to Air-Traffic-System/decoder
+
 Run `python data_acquisition.py` to start the decoder
 
 ADS-B data should be recorded in the Django database
+
 You can view this in at 127.0.0.1:8000 or http://localhost:8000 in your browser
+
+In order to allow the backend to listen on other devices in your network:
+`python manage.py runserver 0.0.0.0:80`
+You can view the database by accessing the address of your http://{$RASPBERRYPI_IP_ADDRESS}:8000/
+
+Similarly, the line below in AircraftData.js in /frontend/src/aircraft_data/ needs to be changed to the IP address of your Raspberry Pi
+`const res = await fetch("http://{$RASPBERRYPI_IP_ADDRESS}:8000/api/aircraftdata/")`
 
 ### Starting the frontend
 In a new window change directory to Air-Traffic-System/frontend
