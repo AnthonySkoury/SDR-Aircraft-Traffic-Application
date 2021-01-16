@@ -1,3 +1,12 @@
+# Installing Dependencies
+* npm, Node.js, and the create-react-app is required to run the web app
+* Install Node.js and npm: https://www.npmjs.com/get-npm
+* Run `npx create-react-app my-app` to install React
+* To install the required dependencies, run `npm install`
+* If needed, install the Google Maps API with `npm install google-map-react`
+* Follow this [guide](https://developers.google.com/maps/documentation/embed/get-api-key) to get your own API key and add it to the frontend/src/map/Map.js file.
+* To start the web app, use `npm start` and it should start on localhost:3000
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

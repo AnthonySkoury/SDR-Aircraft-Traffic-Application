@@ -1,36 +1,164 @@
 # Air-Traffic-System
 An air traffic system that uses an ADS-B receiver to obtain data.
 
-## Getting Started
+## Note
 
-
-
-#### Note
-
-
-### Prerequisites
-
-## Hardware Setup
+## General Usage Setup
 ### Prerequisites
 * Raspberry Pi with Raspbian
   * To set up Raspberry Pi: 
     * Install [Raspberry Pi Imager](https://www.raspberrypi.org/software/) 
     * Follow this guide to flash Raspberry Pi OS onto your SD card: https://www.raspberrypi.org/documentation/installation/installing-images/
+    * Once the image is installed run the following commands
+    ```bash
+    sudo apt-get update
+    sudo apt-get install build-essential git -y
+    ```
+
+* Docker
+  * Docker can be set up on the Raspberry Pi or on another machine.
+    * [To install on Raspberry Pi](https://docs.docker.com/engine/install/debian/)
+    * [To install on Mac/Windows/Linux PC](https://docs.docker.com/get-docker/)
+
+### Installing
+
+First [clone the repository](https://help.github.com/en/articles/cloning-a-repository) via Git using the following command
+```bash
+git clone https://github.com/AnthonySkoury/Air-Traffic-System.git
+```
+
+
 ### Setting up RTL-SDR and Dump1090
 * Install rtl-sdr lib using `sudo apt-get install rtl-sdr librtlsdr-dev`
 * `git clone https://github.com/antirez/dump1090`
 * cd into dump1090 directory
 * `make`
-* Run `dump1090 --interactive` to start retrieving ADS-B data
+* If issues persist with Makefile follow the steps [here](https://github.com/antirez/dump1090/issues/142), in summary:
+  * Run `pkg-config --libs librtlsdr --debug` to find the path of `librtlsdr.pc` on Raspbian it is most likely `/usr/lib/arm-linux-gnueabihf/pkgconfig/librtlsdr.pc` and on Linux it is most likely `/usr/lib/x86_64-linux-gnu/pkgconfig/librtlsdr.pc`
+  * Change the file to to following:
+  
+    ```bash
+    prefix=/usr
+    exec_prefix=${prefix}
+    libdir=${exec_prefix}/lib
+    includedir=${prefix}/include
+    ```
+* Run `dump1090 --interactive --net` to start retrieving ADS-B data
 
-## General Usage
-* [Docker](https://www.docker.com/)
+### Setting up the database and backend
+
+**Setting up and running the Database**
+* To work with the Django backend, first a PostgreSQL database is required. The recommended approach would be to use a PostgreSQL Docker Container.
+
+To run a PostgreSQL Container in Docker, the image needs to be installed.
+
+[PostgreSQL Image](https://hub.docker.com/_/postgres)
+
+The following command can be used to set up the Docker Container. Note that the password can be changed but the name and port should stay consistent as they are the expected ones in the Django database settings. Django will use those to connect to the database.
+
+```bash
+docker run --name aircraft_db -e POSTGRES_USER=aircraft_db -e POSTGRES_DB=aircraft_db -e POSTGRES_PASSWORD=raspberry -d -p 5432:5432 postgres
+```
+
+**Setting up the backend**
+* cd into the Air-Traffic-System directory
+`cd Air-Traffic-System/`
+ 
+Get set up with the virtual environment for dependencies:
+```bash
+pip install pipenv
+pipenv shell
+```
+
+Install the requirements from the Pipfile:
+
+```bash
+pipenv sync
+```
+Change directories into the backend to access the Django manager manage.py
+
+```bash
+cd Air-Traffic-System/backend/
+```
+
+Create the database:
+
+```bash
+python manage.py migrate
+```
+
+Run the development server:
+
+```bash
+python manage.py runserver
+```
+
+Backend located at **127.0.0.1:8000** or http://localhost:8000 .
+* For more information, please read the backend README [here](https://github.com/AnthonySkoury/Air-Traffic-System/blob/main/backend/README.md)
+
+### Setting up the frontend
+**Installing Dependencies**
+npm, Node.js, and the create-react-app is required to run the web app
+
+Install Node.js and npm: https://www.npmjs.com/get-npm
+
+Run `npx create-react-app my-app` to install React
+
+To install the required dependencies, run `npm install`
+
+If needed, install the Google Maps API with `npm install google-map-react`
+
+Follow this [guide](https://developers.google.com/maps/documentation/embed/get-api-key) to get your own API key and add it to the frontend/src/map/Map.js file 
+
+Add the API key to the value of key in `bootstrapURLKeys={{ key: '' }}`.
+
+* For more information, please read the frontend README [here](https://github.com/AnthonySkoury/Air-Traffic-System/blob/main/frontend/README.md)
+
+### Running the decoder and backend
+Start the virtual environment
+
+`cd Air-Traffic-System`
+
+`pipenv shell`
+
+Run the development server:
+
+Change directory to Air-Traffic-System/backend
+```bash
+python manage.py runserver
+```
+
+Change directory to Air-Traffic-System/decoder/RTL-SDR/dump1090
+
+Run `dump1090 --interactive --net` to start dump1090
+
+In another window, change directory to Air-Traffic-System/decoder
+
+Run `python data_acquisition.py` to start the decoder
+
+ADS-B data should be recorded in the Django database
+
+You can view this in at 127.0.0.1:8000 or http://localhost:8000 in your browser
+
+In order to allow the backend to listen on other devices in your network:
+`python manage.py runserver 0.0.0.0:80`
+You can view the database by accessing the address of your http://{$RASPBERRYPI_IP_ADDRESS}:8000/
+
+Similarly, the line below in AircraftData.js in /frontend/src/aircraft_data/ needs to be changed to the IP address of your Raspberry Pi
+`const res = await fetch("http://{$RASPBERRYPI_IP_ADDRESS}:8000/api/aircraftdata/")`
+
+### Starting the frontend
+In a new window change directory to Air-Traffic-System/frontend
+To start the web app, use `npm start` and it should be located on localhost:3000
 
 ## Development
+
+### Tools Used
 * [Git](https://git-scm.com/) for version control
 * [Django](https://www.djangoproject.com/) for backend
 * [React](https://reactjs.org/) for frontend
-
+* [Docker](https://www.docker.com/) for database host
+* [PostgreSQL](https://www.postgresql.org/) for database used
 
 Knowledge and skills needed
 
@@ -38,62 +166,22 @@ Knowledge and skills needed
 * General understanding of REST API framework
 * General Understanding of how SDRs work
 
-
-### Installing
-
-To get a developer environment running please do the following:
-
-#### Initial setup
-
-
-
-#### Creating the project
-
-* Clone the repository via [Git](https://help.github.com/en/articles/cloning-a-repository)
-
-#### Project Setup
-
-
-
-
-#### Demo
-
-## Building then running the program
-
-
-
-### Debugging the program
-
-
-
-## Deployment
-
-For deploying follow these steps
-
-
-
-
-
-## Built With
-
-
-
 ## Contributing
 
 Please contact us or Peter Burke if you are interested in taking this project further.
 
 ## Versioning
 
-I use [Git](https://git-scm.com/) for versioning.
+We use [Git](https://git-scm.com/) for versioning.
 
 ## Authors
 
-* **Anthony Skoury** - *Computer Engineering* - [My GitHub](https://github.com/AnthonySkoury)
+* **Anthony Skoury** - *Computer Engineer* - [My Website](https://anthonyskoury.github.io/)
 * **Randall Cheng** - *Electrical Engineer, Computer Engineer*
 * **Alan Wong**
 
 ## License
-This project is licensed under the APGL_v3 License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the APGL_v3 License - see the [LICENSE.md](https://github.com/AnthonySkoury/Air-Traffic-System/blob/main/LICENSE) file for details
 
 
 ## Acknowledgments

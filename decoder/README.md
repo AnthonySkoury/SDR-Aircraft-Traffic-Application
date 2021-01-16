@@ -1,4 +1,4 @@
-# If tag is shown then readme is incomplete
+# If tag is shown then readme is incomplete (90% complete)
 
 Air-Traffic Dump1090 Receiving & Parsing Script
 ===
@@ -8,17 +8,23 @@ Air-Traffic Dump1090 Receiving & Parsing Script
 Purpose
 ---
 
-To receive ADS-B data from each aircraft in the vicinity of the scan radius
+To receive ADS-B data from each aircraft in the vicinity of the scan radius.
+
+
 
 In the dump1090 directory being utilized, run the command:
 ---
 
 ./dump1090 --interactive --net
 
+***Before running command, ensure the RTL-SDR module is connected through USB to the Raspberry Pi and is detected***
+
 As the script is currently operating in Python 3.7, the command utilized to run the script is:
 ---
 
 python3 data_acquisition.py
+
+***Run this command in a separate terminal window as Dump1090 interactive is running***
 
 Functions
 ---
@@ -55,5 +61,8 @@ Notes
 
 * Optimization from serial to parallel to be determined
 
-*
 
+
+Acknowledgments
+---
+Thank you to the creators for Dump1090 as well as the Python Requests library

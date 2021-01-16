@@ -79,7 +79,7 @@ python manage.py dumpdata aircraft --indent=4 --natural-foreign --natural-primar
 Either Django or PostgreSQL can be used to delete the database tables or data.
 
 To delete the database tables in Django the following can be ran using the Django manager. (Note the user must have psql installed locally for this option)
-```bash
+```SQL
 python manage.py dbshell
 >>> DROP TABLE aircraft_aircraft_table
 >>> DROP TABLE aircraft_data_record_table
@@ -159,10 +159,11 @@ psql -U postgres aircraft_db < dumpfile
 
 ## Running the backend
 
-Clone the repository to your local machine:
+Clone the repository to your local machine if it isn't cloned already and change directories:
 
 ```bash
 git clone https://github.com/AnthonySkoury/Air-Traffic-System.git
+cd Air-Traffic-System/
 ```
 
 Get set up with the virtual environment for dependencies:
@@ -175,6 +176,11 @@ Install the requirements from the Pipfile:
 
 ```bash
 pipenv sync
+```
+Change directories into the backend to access the Django manager manage.py
+
+```bash
+cd Air-Traffic-System/backend/
 ```
 
 Create the database:
@@ -197,3 +203,9 @@ Backend located at **127.0.0.1:8000** or http://localhost:8000 .
 * [serializers.py](https://github.com/AnthonySkoury/Air-Traffic-System/blob/main/backend/aircraft/serializers.py) Serializers used to convert the SQL data into JSON or JSON into SQL
 * [api.py](https://github.com/AnthonySkoury/Air-Traffic-System/blob/main/backend/aircraft/api.py) API for viewsets which are used as the interface between the users with the data models/tables
 * [urls.py](https://github.com/AnthonySkoury/Air-Traffic-System/blob/main/backend/aircraft/urls.py) Defined URLs for API
+
+## Acknowledgments
+Thank you for the creators as well as documentation/tutorials for all the libraries/packages used. Notable ones include:
+* [psycopg](https://www.psycopg.org/) PostgreSQL adapter for Python
+* [Django Rest Framework](https://www.django-rest-framework.org/) Django toolkit for building Web APIs
+* [Django Cors Headers](https://github.com/adamchainz/django-cors-headers) Django app that adds Cross-Origin Resource Sharing (CORS) headers to responses
