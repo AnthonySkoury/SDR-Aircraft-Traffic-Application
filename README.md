@@ -43,7 +43,7 @@ git clone https://github.com/AnthonySkoury/Air-Traffic-System.git
     libdir=${exec_prefix}/lib
     includedir=${prefix}/include
     ```
-* Run `dump1090 --interactive --net` to start retrieving ADS-B data
+* Run `./dump1090 --interactive --net` inside the dump1090 directory to start retrieving ADS-B data
 
 ### Setting up the database and backend
 
