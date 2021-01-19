@@ -67,11 +67,12 @@ docker run --name aircraft_db -e POSTGRES_USER=aircraft_db -e POSTGRES_DB=aircra
 Get set up with the virtual environment for dependencies:
 ```bash
 pip install pipenv
-* if directory issues exist, modify ~/.bashrc with the line
-* export PATH="/home/pi/.local/bin:$PATH"
-* at the end of the file
 pipenv shell
 ```
+* if directory issues exist when running pip install pipenv, modify ~/.bashrc with the line
+* export PATH="/home/pi/.local/bin:$PATH"
+* at the end of the file
+
 
 Install the requirements from the Pipfile:
 
