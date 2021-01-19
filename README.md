@@ -77,6 +77,7 @@ pipenv shell
 Install the requirements from the Pipfile:
 
 ```bash
+sudo apt-get install libpq-dev python-dev
 pipenv sync
 ```
 Change directories into the backend to access the Django manager manage.py
