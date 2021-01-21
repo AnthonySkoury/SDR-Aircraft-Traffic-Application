@@ -18,6 +18,11 @@ An air traffic system that uses an ADS-B receiver to obtain data.
 * Docker
   * Docker can be set up on the Raspberry Pi or on another machine.
     * [To install on Raspberry Pi](https://docs.docker.com/engine/install/debian/)
+      * The simplest way is to use the convenience script as follows:
+        ```bash
+        curl -fsSL https://get.docker.com -o get-docker.sh
+        sudo sh get-docker.sh
+        ```
     * [To install on Mac/Windows/Linux PC](https://docs.docker.com/get-docker/)
 
 ### Installing
