@@ -43,7 +43,7 @@ class AircraftData extends React.Component {
         // const res = await fetch("http://192.168.0.105:8000/api/aircraftdata/?start-time=2020-12-04T21:10:09Z&end-time=2020-12-04T21:11:49Z")
         // const res = await fetch("http://192.168.0.105:8000/api/aircraftdata/")
         
-        const res = await fetch("http://192.168.0.1:8000/api/aircraftdata/")
+        const res = await fetch("http://127.0.0.1:8000/api/aircraftdata/")
         let data = await res.json();
         // const filteredData = this.state.result.filter(data => new Date(data.timestamp) >= new Date("09/30/2019") && new Date(data.timestamp) <= new Date("10/07/2019"))
         // const filteredData =  data.filter(d => new Date().toISOString() <= d.start-time)
