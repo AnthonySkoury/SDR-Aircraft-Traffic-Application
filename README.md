@@ -114,6 +114,8 @@ Install Node.js and npm: https://www.npmjs.com/get-npm
 
 Run `npx create-react-app my-app` to install React
 
+`cd Air-Traffic-System/frontend`
+
 To install the required dependencies, run `npm install`
 
 If needed, install the Google Maps API with `npm install google-map-react`
@@ -159,6 +161,7 @@ Similarly, the line below in AircraftData.js in /frontend/src/aircraft_data/ nee
 
 ### Starting the frontend
 In a new window change directory to Air-Traffic-System/frontend
+
 To start the web app, use `npm start` and it should be located on localhost:3000
 
 ## Development
