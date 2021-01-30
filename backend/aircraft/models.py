@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.validators import RegexValidator
+from django.core.exceptions import ValidationError
 
 # Database Tables defined in Django Models
 
@@ -142,3 +144,29 @@ class DataRecord(models.Model):
         db_table = 'data_record_table'
         # Ensure there can't be a duplicate ICAO and timestamp combination
         unique_together = (('timestamp','icao'),)
+
+# User Notification Record model
+class UserNotification(models.Model):
+    # User Notification Record identifier that auto increments
+    notif_id = models.AutoField(primary_key=True, editable=False)
+    name = models.CharField(null=True, blank=True, max_length=50)
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be E.164 format, e.x. '+999999999' with up to 15 digits")
+    phone = models.CharField(validators=[phone_regex], max_length=17, blank=True)
+    email = models.EmailField(max_length=254, blank=True)
+
+    # First coordinate for region bound
+    longitude1 = models.DecimalField(max_digits=9, decimal_places=6)
+    latitude1 = models.DecimalField(max_digits=8, decimal_places=6)
+
+    # Second coordinate for region bound
+    longitude2 = models.DecimalField(max_digits=9, decimal_places=6)
+    latitude2 = models.DecimalField(max_digits=8, decimal_places=6)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if not cleaned_data.get('phone') and not cleaned_data.get('email'):
+            raise ValidationError("Phone and or Email must be defined")
+
+    class Meta:
+        # Table name in Postgresql
+        db_table = 'user_notif_table'

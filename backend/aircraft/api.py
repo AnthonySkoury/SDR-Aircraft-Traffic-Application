@@ -1,9 +1,9 @@
-from aircraft.models import Aircraft, DataRecord
+from aircraft.models import Aircraft, DataRecord, UserNotification
 from rest_framework import viewsets, permissions, status, renderers
 from rest_framework.response import Response
 # from rest_framework.decorators import action
 
-from .serializers import AircraftSerializer, DataRecordSerializer, AircraftDataSerializer
+from .serializers import AircraftSerializer, DataRecordSerializer, AircraftDataSerializer, UserNotificationSerializer
 from django.db.models import Prefetch
 # from django.http import FileResponse
 
@@ -120,6 +120,17 @@ class AircraftDataViewSet(viewsets.ViewSet):
 
         # Send response
         return Response(serializer.data)
+
+# User Notification viewset with CRUD operation defaults from ModelViewSet
+class UserNotificationViewSet(viewsets.ModelViewSet):
+    queryset = UserNotification.objects.all()
+
+    # Serialize SQL into JSON or JSON into SQL
+    serializer_class = UserNotificationSerializer
+
+    permission_classes = [
+        permissions.AllowAny
+    ]
 
 # class DownloadDBViewSet(viewsets.ReadOnlyModelViewSet):
 #     queryset = Aircraft.objects.prefetch_related(Prefetch('datarecord_set', queryset=DataRecord.objects.order_by('-timestamp'))).all()

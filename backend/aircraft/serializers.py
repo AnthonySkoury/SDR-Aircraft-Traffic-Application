@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from aircraft.models import Aircraft, DataRecord
+from aircraft.models import Aircraft, DataRecord, UserNotification
 
 # Serializers are used to convert the SQL data into JSON or JSON into SQL
 
@@ -27,4 +27,11 @@ class AircraftDataSerializer(serializers.ModelSerializer):
     # Define base model and fields to be displayed
     class Meta:
         model = Aircraft
-        fields = ['icao', 'name', 'aircraft_type', 'datarecord_set']
+        fields = '__all__'
+
+class UserNotificationSerializer(serializers.ModelSerializer):
+
+    # Define base model and fields to be displayed
+    class Meta:
+        model = UserNotification
+        fields = '__all__'
