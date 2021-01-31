@@ -108,6 +108,7 @@ Backend located at **127.0.0.1:8000** or http://localhost:8000 .
 
 ### Setting up the frontend
 **Installing Dependencies**
+
 npm, Node.js, and the create-react-app is required to run the web app
 
 Install Node.js and npm: https://www.npmjs.com/get-npm
@@ -121,6 +122,7 @@ To install the required dependencies, run `npm install`
 If needed, install the Google Maps API with `npm install google-map-react`
 
 **Obtaining a Google Maps API Key**
+
 Go to the [Google Cloud Platform Console](https://console.cloud.google.com/apis/credentials?authuser=0&_ga=2.126357261.1224200343.1612121726-26711352.1612121726) and create a new project
 
 You may have to create a new account and link your credit card to access the free tier. Google provides $200 of monthly credit and it only costs @2 per 1000 requests.
