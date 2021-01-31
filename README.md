@@ -120,9 +120,16 @@ To install the required dependencies, run `npm install`
 
 If needed, install the Google Maps API with `npm install google-map-react`
 
-Follow this [guide](https://developers.google.com/maps/documentation/embed/get-api-key) to get your own API key and add it to the frontend/src/map/Map.js file 
+**Obtaining a Google Maps API Key**
+Go to the [Google Cloud Platform Console](https://console.cloud.google.com/apis/credentials?authuser=0&_ga=2.126357261.1224200343.1612121726-26711352.1612121726) and create a new project
 
-Add the API key to the value of key in `bootstrapURLKeys={{ key: '' }}`.
+You may have to create a new account and link your credit card to access the free tier. Google provides $200 of monthly credit and it only costs @2 per 1000 requests.
+
+In the credentials tab, click on the "Create Credentials" button and select "API Key"
+
+In the `frontend/src/map/Map.js` file, add the API key to the value of key in `bootstrapURLKeys={{ key: '' }}`.
+
+For more information on getting a Google Maps API key, please refer to the Google docs [here](https://developers.google.com/maps/documentation/javascript/get-api-key)
 
 * For more information, please read the frontend README [here](https://github.com/AnthonySkoury/Air-Traffic-System/blob/main/frontend/README.md)
 
@@ -153,7 +160,7 @@ ADS-B data should be recorded in the Django database
 You can view this in at 127.0.0.1:8000 or http://localhost:8000 in your browser
 
 In order to allow the backend to listen on other devices in your network:
-`python manage.py runserver 0.0.0.0:80`
+`python manage.py runserver 0.0.0.0:8000`
 You can view the database by accessing the address of your http://{$RASPBERRYPI_IP_ADDRESS}:8000/
 
 Similarly, the line below in AircraftData.js in /frontend/src/aircraft_data/ needs to be changed to the IP address of your Raspberry Pi
