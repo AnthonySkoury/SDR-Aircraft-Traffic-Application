@@ -2,9 +2,10 @@
 An air traffic system that uses an ADS-B receiver to obtain data.
 
 ## Note
+There are two methods of installation, with script (beta) and manual (tested). The script section details the bare minimum for starting each component after installation. For more information on using each component or for troubleshooting, refer the manual installation sections and the README for each component.
 
-## General Usage Setup
-### Prerequisites
+# General Usage Setup
+## Prerequisites
 * RTL SDR
 * Raspberry Pi with Raspbian
   * To set up Raspberry Pi: 
@@ -16,7 +17,7 @@ An air traffic system that uses an ADS-B receiver to obtain data.
     sudo apt-get install build-essential git -y
     ```
 
-* Docker
+* Docker (for manual installation follow these steps)
   * Docker can be set up on the Raspberry Pi or on another machine.
     * [To install on Raspberry Pi](https://docs.docker.com/engine/install/debian/)
       * The simplest way is to use the convenience script as follows:
@@ -26,7 +27,64 @@ An air traffic system that uses an ADS-B receiver to obtain data.
         ```
     * [To install on Mac/Windows/Linux PC](https://docs.docker.com/get-docker/)
 
-### Installing
+## Installation using script
+Please use the files install.sh and librtlsdr.pc
+In the same directory with install.sh and librtlsdr.pc run the following command:
+```bash
+echo y | ./install.sh
+```
+Is issues persist with Dump1090 portion of install, refer to fixes in the section below.
+**After installation, dependencies for the virtual environment for the backend must be synchronized by the user with these steps:**
+* Ensure you are in the root directory for the repo, Air-Traffic-System then run:
+```bash
+pipenv shell
+```
+* if directory issues exist when running pip install pipenv, modify ~/.bashrc with the line
+* export PATH="/home/pi/.local/bin:$PATH"
+* at the end of the file
+
+Install the requirements from the Pipfile:
+```bash
+pipenv sync
+```
+Change directories into the backend to access the Django manager manage.py
+
+```bash
+cd Air-Traffic-System/backend/
+```
+
+Create the database:
+
+```bash
+python manage.py migrate
+```
+### Starting each component
+The following commands are to start each component. For more information, refer to the manual installation of each category and/or the README of each component (in the directory of each).
+### Start Dump1090
+```bash
+cd decoder/RTL-SDR/dump1090/
+./dump1090 --interactive --net
+```
+### Start Decoder
+```bash
+cd decoder/
+python data_acquisition.py 
+```
+### Start Docker
+```bash
+docker start aircraft_db
+```
+### Start Backend
+```bash
+cd backend/
+python manage.py runserver 0.0.0.0:8000
+```
+### Start Frontend
+```bash
+cd frontend/
+npm start
+```
+## Manual Installation
 
 First [clone the repository](https://help.github.com/en/articles/cloning-a-repository) via Git using the following command
 ```bash
@@ -151,7 +209,7 @@ python manage.py runserver
 
 Change directory to Air-Traffic-System/decoder/RTL-SDR/dump1090
 
-Run `dump1090 --interactive --net` to start dump1090
+Run `./dump1090 --interactive --net` to start dump1090
 
 In another window, change directory to Air-Traffic-System/decoder
 
