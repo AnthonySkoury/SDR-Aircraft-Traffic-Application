@@ -59,31 +59,8 @@ Create the database:
 python manage.py migrate
 ```
 ### Starting each component
-The following commands are to start each component. For more information, refer to the manual installation of each category and/or the README of each component (in the directory of each).
-### Start Dump1090
-```bash
-cd decoder/RTL-SDR/dump1090/
-./dump1090 --interactive --net
-```
-### Start Decoder
-```bash
-cd decoder/
-python data_acquisition.py 
-```
-### Start Docker
-```bash
-docker start aircraft_db
-```
-### Start Backend
-```bash
-cd backend/
-python manage.py runserver 0.0.0.0:8000
-```
-### Start Frontend
-```bash
-cd frontend/
-npm start
-```
+To get an API key for the frontend (required for Google maps portion of frontend) refer to the following instructions [Obtaining a Google Maps API Key](https://github.com/AnthonySkoury/Air-Traffic-System#running-the-decoder-and-backend). To run the decoder and backend refer to these [instructions](https://github.com/AnthonySkoury/Air-Traffic-System#running-the-decoder-and-backend). To start the frontend component refer to these [instructions](https://github.com/AnthonySkoury/Air-Traffic-System#starting-the-frontend). For more information, refer to  the README of each component (in the directory of each).
+
 ## Manual Installation
 
 First [clone the repository](https://help.github.com/en/articles/cloning-a-repository) via Git using the following command
