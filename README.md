@@ -2,7 +2,7 @@
 An air traffic system that uses an ADS-B receiver to obtain data.
 
 ## Note
-There are two methods of installation, with script (beta) and manual (tested). The script section details the bare minimum for starting each component after installation. For more information on using each component or for troubleshooting, refer the manual installation sections and the README for each component.
+There are two methods of installation, with script (beta) and manual (tested). For more information on using each component or for troubleshooting, refer the manual installation sections and the README for each component.
 
 # General Usage Setup
 ## Prerequisites
@@ -59,7 +59,7 @@ Create the database:
 python manage.py migrate
 ```
 ### Starting each component
-To get an API key for the frontend (required for Google maps portion of frontend) refer to the following instructions [Obtaining a Google Maps API Key](https://github.com/AnthonySkoury/Air-Traffic-System#running-the-decoder-and-backend). To run the decoder and backend refer to these [instructions](https://github.com/AnthonySkoury/Air-Traffic-System#running-the-decoder-and-backend). To start the frontend component refer to these [instructions](https://github.com/AnthonySkoury/Air-Traffic-System#starting-the-frontend). For more information, refer to  the README of each component (in the directory of each).
+To get an API key for the frontend (required for Google maps portion of frontend) refer to the following instructions [Obtaining a Google Maps API Key](https://github.com/AnthonySkoury/Air-Traffic-System#starting-the-frontend). To run the decoder and backend refer to these [instructions](https://github.com/AnthonySkoury/Air-Traffic-System#running-the-decoder-and-backend). To start the frontend component refer to these [instructions](https://github.com/AnthonySkoury/Air-Traffic-System#starting-the-frontend). For more information, refer to  the README of each component (in the directory of each).
 
 ## Manual Installation
 
