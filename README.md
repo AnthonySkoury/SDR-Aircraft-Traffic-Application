@@ -31,7 +31,7 @@ There are two methods of installation, with script (beta) and manual (tested). F
 Please use the files install.sh and librtlsdr.pc
 In the same directory with install.sh and librtlsdr.pc run the following command:
 ```bash
-echo y | ./install.sh
+echo y | sudo ./install.sh
 ```
 Is issues persist with Dump1090 portion of install, refer to fixes in the section below.
 **After installation, dependencies for the virtual environment for the backend must be synchronized by the user with these steps:**
@@ -106,7 +106,9 @@ docker run --name aircraft_db -e POSTGRES_USER=aircraft_db -e POSTGRES_DB=aircra
  
 Get set up with the virtual environment for dependencies:
 ```bash
-pip3 install pipenv
+echo 'export PATH="${HOME}/.local/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+pip3 install --user --default-timeout=1000 pipenv
 pipenv shell
 ```
 * if directory issues exist when running pip install pipenv, modify ~/.bashrc with the line
