@@ -173,6 +173,10 @@ In a new window change directory to Air-Traffic-System/frontend
 
 To start the web app, use `npm start` and it should be located on localhost:3000
 
+* if issues arise, check the docker
+* in the backend directory, run "sudo docker ps"
+* if need be, run "sudo docker restart aircraft_db" in the backend directory
+
 ## Development
 
 ### Tools Used
