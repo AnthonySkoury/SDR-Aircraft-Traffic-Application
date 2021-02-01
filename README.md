@@ -5,6 +5,7 @@ An air traffic system that uses an ADS-B receiver to obtain data.
 
 ## General Usage Setup
 ### Prerequisites
+* RTL SDR
 * Raspberry Pi with Raspbian
   * To set up Raspberry Pi: 
     * Install [Raspberry Pi Imager](https://www.raspberrypi.org/software/) 
@@ -35,8 +36,7 @@ git clone https://github.com/AnthonySkoury/Air-Traffic-System.git
 
 ### Setting up RTL-SDR and Dump1090
 * Install rtl-sdr lib using `sudo apt-get install rtl-sdr librtlsdr-dev`
-* `git clone https://github.com/antirez/dump1090`
-* cd into dump1090 directory
+* cd into dump1090 directory `cd Air-Traffic-System/decoder/RTL-SDR/dump1090/`
 * `make`
 * If issues persist with Makefile follow the steps [here](https://github.com/antirez/dump1090/issues/142), in summary:
   * Run `pkg-config --libs librtlsdr --debug` to find the path of `librtlsdr.pc` on Raspbian it is most likely `/usr/lib/arm-linux-gnueabihf/pkgconfig/librtlsdr.pc` and on Linux it is most likely `/usr/lib/x86_64-linux-gnu/pkgconfig/librtlsdr.pc`
