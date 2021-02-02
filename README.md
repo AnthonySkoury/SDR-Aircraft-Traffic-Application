@@ -29,9 +29,9 @@ There are two methods of installation, with script (beta) and manual (tested). F
 
 ## Installation using script
 Please use the files install.sh and librtlsdr.pc
-In the same directory with install.sh and librtlsdr.pc or in the root directory of the cloned repository (Air-Traffic-System) run the following command:
+In the same directory with install.sh or in the root directory of the cloned repository (Air-Traffic-System) run the following command:
 ```bash
-echo y | sudo ./install.sh
+sudo echo y | sudo ./install.sh |& sudo tee -a installation.log
 ```
 Is issues persist with Dump1090 portion of install, refer to fixes in the section below.
 **After installation, dependencies for the virtual environment for the backend must be synchronized by the user with these steps:**
