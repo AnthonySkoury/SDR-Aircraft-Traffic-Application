@@ -9,16 +9,16 @@ LOCALREPO=Air-Traffic-System
 
 LOCALREPO_VC_DIR=$LOCALREPO/.git
 
-# # check for essentials on the Pi
-# sudo apt-get update
-# sudo apt-get install build-essential git -y
+# check for essentials on the Pi
+sudo apt-get update
+sudo apt-get install build-essential git -y
 
-# # install Docker
-# curl -fsSL https://get.docker.com -o get-docker.sh
-# sudo sh get-docker.sh
+# install Docker
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
 
 # clone the repository
-if [ ! -d $LOCALREPO_VC_DIR ]
+if [ ! -d $LOCALREPO_VC_DIR ] && [! -d .git]
 then
     git clone $REPOSRC $LOCALREPO
     cd $LOCALREPO
@@ -57,4 +57,6 @@ sudo apt install nodejs
 npx create-react-app my-app
 cd frontend
 npm install
+npm install google-map-react
+
 npm install google-map-react
