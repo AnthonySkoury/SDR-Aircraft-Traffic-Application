@@ -29,7 +29,7 @@ There are two methods of installation, with script (beta) and manual (tested). F
 
 ## Installation using script
 Please use the files install.sh and librtlsdr.pc
-In the same directory with install.sh and librtlsdr.pc run the following command:
+In the same directory with install.sh and librtlsdr.pc or in the root directory of the cloned repository (Air-Traffic-System) run the following command:
 ```bash
 echo y | sudo ./install.sh
 ```
