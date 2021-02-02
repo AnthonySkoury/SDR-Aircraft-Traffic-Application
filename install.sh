@@ -58,5 +58,3 @@ npx create-react-app my-app
 cd frontend
 npm install
 npm install google-map-react
-
-npm install google-map-react
