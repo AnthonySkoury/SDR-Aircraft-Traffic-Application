@@ -18,7 +18,7 @@ curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
 
 # clone the repository
-if [ ! -d $LOCALREPO_VC_DIR ] && [! -d .git]
+if [ ! -d $LOCALREPO_VC_DIR ] && [ ! -d .git ]
 then
     git clone $REPOSRC $LOCALREPO
     cd $LOCALREPO
