@@ -1,19 +1,23 @@
 #!/bin/bash -x
 
+
+dt=$(date +"Date : %d/%m/%Y Time : %H:%M:%S");
+echo "Beginning script $dt"
+
 REPOSRC=https://github.com/AnthonySkoury/Air-Traffic-System.git
 LOCALREPO=Air-Traffic-System
 
 LOCALREPO_VC_DIR=$LOCALREPO/.git
 
-# check for essentials on the Pi
-sudo apt-get update
-sudo apt-get install build-essential git -y
+# # check for essentials on the Pi
+# sudo apt-get update
+# sudo apt-get install build-essential git -y
 
-# install Docker
-curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
+# # install Docker
+# curl -fsSL https://get.docker.com -o get-docker.sh
+# sudo sh get-docker.sh
 
-# clone the repository if it doesn't exist
+# clone the repository
 if [ ! -d $LOCALREPO_VC_DIR ]
 then
     git clone $REPOSRC $LOCALREPO
