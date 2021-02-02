@@ -205,6 +205,8 @@ You can view the database by accessing the address of your http://{$RASPBERRYPI_
 Similarly, the line below in AircraftData.js in /frontend/src/aircraft_data/ needs to be changed to the IP address of your Raspberry Pi
 `const res = await fetch("http://{$RASPBERRYPI_IP_ADDRESS}:8000/api/aircraftdata/")`
 
+If neither of these links work to view the pages from another device, it is possible there is a firewall issue in your network. However, the links are still accessible on the Raspberry Pi itself, with the option of using localhost instead of the IP address on your Raspberry Pi's browser.
+
 ### Starting the frontend
 In a new window change directory to Air-Traffic-System/frontend
 
