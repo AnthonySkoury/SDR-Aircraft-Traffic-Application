@@ -4,6 +4,8 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
 
+import Marker from './Marker';
+
 const mapStyles = {
   width: '100%',
   height: '100%'
@@ -24,22 +26,45 @@ class MapContainer extends Component {
     };
   }
 
+  componentDidUpdate() {
+    console.log('markers',this.props.markers)
+    console.log(this.props.markers[0].lon)
+  }
+
   render() {
     return (
+      <div style={{ height: '94vh', width: '100%' }}>
+        <GoogleMapReact
+          bootstrapURLKeys={{ key: '' }}
+          defaultCenter={this.state.center}
+          defaultZoom={this.state.zoom}
+        >
+          {this.props.markers && this.props.markers.map(d => {
+            return (
+                <Marker key={d.icao}
+                    lat = {d.lat}
+                    lng={d.lon}
+                    name={d.icao}
+                    color = "blue"
+                />
+            );
+          })}
+        </GoogleMapReact>
+      </div>
       // always set container height explicitly
-      <div style={{ height: '92vh', width: '100%' }}>
-          <GoogleMapReact
-            bootstrapURLKeys={{ key: '' }}
-            defaultCenter={this.state.center}
-            defaultZoom={this.state.zoom}
-          >
-          <AnyReactComponent
-            lat={59.955413}
-            lng={30.337844}
-            text="My Marker"
-          />
-          </GoogleMapReact>
-        </div>
+      // <div style={{ height: '92vh', width: '100%' }}>
+      //     <GoogleMapReact
+      //       bootstrapURLKeys={{ key: 'AIzaSyDeWQdLlMHZPAdXkUp1Gv72orwkEu6mKOY' }}
+      //       defaultCenter={this.state.center}
+      //       defaultZoom={this.state.zoom}
+      //     >
+      //       <AnyReactComponent
+      //         lat={33.955413}
+      //         lng={-117.337844}
+      //         text="My Marker"
+      //       />
+      //     </GoogleMapReact>
+      //   </div>
     );
   }
 }
