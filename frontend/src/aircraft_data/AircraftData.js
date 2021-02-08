@@ -22,6 +22,7 @@ class AircraftData extends React.Component {
     // };
   }
 
+<<<<<<< HEAD
   // async componentDidMount() {
   //   console.log('starting')
   //   console.log('time', new Date().toISOString()	)
@@ -100,6 +101,57 @@ class AircraftData extends React.Component {
   // componentWillUnmount() {
   //   clearInterval(this.myInterval)
   // }
+=======
+  async componentDidMount() {
+    console.log('starting')
+    console.log('time', new Date().toISOString()	)
+    let date = new Date()
+    // date.setMilliseconds(0);
+    let start = date.toISOString()
+    let temp = date
+    temp.setSeconds(temp.getSeconds()-1)
+    let end = temp.toISOString()
+    // console.log('string is',"http://192.168.0.105:8000/api/aircraftdata/?start-time=" + start + "&end-time="+end)
+    try {
+      this.myInterval = setInterval(async () => {
+        let date = new Date()
+        // date.setMilliseconds(0);
+        let start = date.toISOString()
+        let temp = date
+        temp.setSeconds(temp.getSeconds()-1)
+        let end = temp.toISOString()
+        // const res = await fetch("http://192.168.0.105:8000/api/aircraftdata/?start-time=" + start + "&end-time="+end)
+        // console.log('string is',"http://192.168.0.105:8000/api/aircraftdata/?start-time=" + start + "&end-time="+end)
+        // const res = await fetch("http://192.168.0.105:8000/api/aircraftdata/?start-time=2020-12-04T21:10:09Z&end-time=2020-12-04T21:11:49Z")
+        // const res = await fetch("http://192.168.0.105:8000/api/aircraftdata/")
+        
+        const res = await fetch("http://127.0.0.1:8000/api/aircraftdata/")
+        let data = await res.json();
+        // const filteredData = this.state.result.filter(data => new Date(data.timestamp) >= new Date("09/30/2019") && new Date(data.timestamp) <= new Date("10/07/2019"))
+        // const filteredData =  data.filter(d => new Date().toISOString() <= d.start-time)
+        console.log('adding',data)
+        // console.log('example',data[0].datarecord_set[0].timestamp)
+        console.log('time', new Date())
+        let newdata
+        if(data.length > 6) {
+          newdata = data.slice(-6)
+        } else {
+          newdata = data
+        }
+        console.log('new data is',newdata)
+        this.setState({
+          data: newdata
+        })
+      }, 2000);
+    } catch(e) {
+      console.log('error', e);
+    }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.myInterval)
+  }
+>>>>>>> 2b34f7b361fea391905f3e3581381c7cbcdd957b
 
   render() {
     return (

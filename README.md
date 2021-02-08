@@ -2,9 +2,11 @@
 An air traffic system that uses an ADS-B receiver to obtain data.
 
 ## Note
+There are two methods of installation, with script (beta) and manual (tested). For more information on using each component or for troubleshooting, refer the manual installation sections and the README for each component.
 
-## General Usage Setup
-### Prerequisites
+# General Usage Setup
+## Prerequisites
+* RTL SDR
 * Raspberry Pi with Raspbian
   * To set up Raspberry Pi: 
     * Install [Raspberry Pi Imager](https://www.raspberrypi.org/software/) 
@@ -15,12 +17,51 @@ An air traffic system that uses an ADS-B receiver to obtain data.
     sudo apt-get install build-essential git -y
     ```
 
-* Docker
+* Docker (for manual installation follow these steps)
   * Docker can be set up on the Raspberry Pi or on another machine.
     * [To install on Raspberry Pi](https://docs.docker.com/engine/install/debian/)
+      * The simplest way is to use the convenience script as follows:
+        ```bash
+        curl -fsSL https://get.docker.com -o get-docker.sh
+        sudo sh get-docker.sh
+        ```
     * [To install on Mac/Windows/Linux PC](https://docs.docker.com/get-docker/)
 
-### Installing
+## Installation using script
+Please use the files install.sh and librtlsdr.pc
+In the same directory with install.sh or in the root directory of the cloned repository (Air-Traffic-System) run the following command:
+```bash
+sudo echo y | sudo ./install.sh |& sudo tee -a installation.log
+```
+Is issues persist with Dump1090 portion of install, refer to fixes in the section below.
+**After installation, dependencies for the virtual environment for the backend must be synchronized by the user with these steps:**
+* Ensure you are in the root directory for the repo, Air-Traffic-System then run:
+```bash
+pipenv shell
+```
+* if directory issues exist when running pip install pipenv, modify ~/.bashrc with the line
+* export PATH="/home/pi/.local/bin:$PATH"
+* at the end of the file
+
+Install the requirements from the Pipfile:
+```bash
+pipenv sync
+```
+Change directories into the backend to access the Django manager manage.py
+
+```bash
+cd Air-Traffic-System/backend/
+```
+
+Create the database:
+
+```bash
+python manage.py migrate
+```
+### Starting each component
+To get an API key for the frontend (required for Google maps portion of frontend) refer to the following instructions [Obtaining a Google Maps API Key](https://github.com/AnthonySkoury/Air-Traffic-System#starting-the-frontend). To run the decoder and backend refer to these [instructions](https://github.com/AnthonySkoury/Air-Traffic-System#running-the-decoder-and-backend). To start the frontend component refer to these [instructions](https://github.com/AnthonySkoury/Air-Traffic-System#starting-the-frontend). For more information, refer to  the README of each component (in the directory of each).
+
+## Manual Installation
 
 First [clone the repository](https://help.github.com/en/articles/cloning-a-repository) via Git using the following command
 ```bash
@@ -30,8 +71,7 @@ git clone https://github.com/AnthonySkoury/Air-Traffic-System.git
 
 ### Setting up RTL-SDR and Dump1090
 * Install rtl-sdr lib using `sudo apt-get install rtl-sdr librtlsdr-dev`
-* `git clone https://github.com/antirez/dump1090`
-* cd into dump1090 directory
+* cd into dump1090 directory `cd Air-Traffic-System/decoder/RTL-SDR/dump1090/`
 * `make`
 * If issues persist with Makefile follow the steps [here](https://github.com/antirez/dump1090/issues/142), in summary:
   * Run `pkg-config --libs librtlsdr --debug` to find the path of `librtlsdr.pc` on Raspbian it is most likely `/usr/lib/arm-linux-gnueabihf/pkgconfig/librtlsdr.pc` and on Linux it is most likely `/usr/lib/x86_64-linux-gnu/pkgconfig/librtlsdr.pc`
@@ -43,7 +83,7 @@ git clone https://github.com/AnthonySkoury/Air-Traffic-System.git
     libdir=${exec_prefix}/lib
     includedir=${prefix}/include
     ```
-* Run `dump1090 --interactive --net` to start retrieving ADS-B data
+* Run `./dump1090 --interactive --net` inside the dump1090 directory to start retrieving ADS-B data
 
 ### Setting up the database and backend
 
@@ -66,13 +106,20 @@ docker run --name aircraft_db -e POSTGRES_USER=aircraft_db -e POSTGRES_DB=aircra
  
 Get set up with the virtual environment for dependencies:
 ```bash
-pip install pipenv
+echo 'export PATH="${HOME}/.local/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+pip3 install --user --default-timeout=1000 pipenv
 pipenv shell
 ```
+* if directory issues exist when running pip install pipenv, modify ~/.bashrc with the line
+* export PATH="/home/pi/.local/bin:$PATH"
+* at the end of the file
+
 
 Install the requirements from the Pipfile:
 
 ```bash
+sudo apt-get install libpq-dev python-dev
 pipenv sync
 ```
 Change directories into the backend to access the Django manager manage.py
@@ -98,19 +145,30 @@ Backend located at **127.0.0.1:8000** or http://localhost:8000 .
 
 ### Setting up the frontend
 **Installing Dependencies**
+
 npm, Node.js, and the create-react-app is required to run the web app
 
 Install Node.js and npm: https://www.npmjs.com/get-npm
 
 Run `npx create-react-app my-app` to install React
 
+`cd Air-Traffic-System/frontend`
+
 To install the required dependencies, run `npm install`
 
 If needed, install the Google Maps API with `npm install google-map-react`
 
-Follow this [guide](https://developers.google.com/maps/documentation/embed/get-api-key) to get your own API key and add it to the frontend/src/map/Map.js file 
+**Obtaining a Google Maps API Key**
 
-Add the API key to the value of key in `bootstrapURLKeys={{ key: '' }}`.
+Go to the [Google Cloud Platform Console](https://console.cloud.google.com/apis/credentials?authuser=0&_ga=2.126357261.1224200343.1612121726-26711352.1612121726) and create a new project
+
+You may have to create a new account and link your credit card to access the free tier. Google provides $200 of monthly credit and it only costs @2 per 1000 requests.
+
+In the credentials tab, click on the "Create Credentials" button and select "API Key"
+
+In the `frontend/src/map/Map.js` file, add the API key to the value of key in `bootstrapURLKeys={{ key: '' }}`.
+
+For more information on getting a Google Maps API key, please refer to the Google docs [here](https://developers.google.com/maps/documentation/javascript/get-api-key)
 
 * For more information, please read the frontend README [here](https://github.com/AnthonySkoury/Air-Traffic-System/blob/main/frontend/README.md)
 
@@ -130,7 +188,7 @@ python manage.py runserver
 
 Change directory to Air-Traffic-System/decoder/RTL-SDR/dump1090
 
-Run `dump1090 --interactive --net` to start dump1090
+Run `./dump1090 --interactive --net` to start dump1090
 
 In another window, change directory to Air-Traffic-System/decoder
 
@@ -141,15 +199,22 @@ ADS-B data should be recorded in the Django database
 You can view this in at 127.0.0.1:8000 or http://localhost:8000 in your browser
 
 In order to allow the backend to listen on other devices in your network:
-`python manage.py runserver 0.0.0.0:80`
+`python manage.py runserver 0.0.0.0:8000`
 You can view the database by accessing the address of your http://{$RASPBERRYPI_IP_ADDRESS}:8000/
 
 Similarly, the line below in AircraftData.js in /frontend/src/aircraft_data/ needs to be changed to the IP address of your Raspberry Pi
 `const res = await fetch("http://{$RASPBERRYPI_IP_ADDRESS}:8000/api/aircraftdata/")`
 
+If neither of these links work to view the pages from another device, it is possible there is a firewall issue in your network. However, the links are still accessible on the Raspberry Pi itself, with the option of using localhost instead of the IP address on your Raspberry Pi's browser.
+
 ### Starting the frontend
 In a new window change directory to Air-Traffic-System/frontend
+
 To start the web app, use `npm start` and it should be located on localhost:3000
+
+* if issues arise, check the docker
+* in the backend directory, run "sudo docker ps"
+* if need be, run "sudo docker restart aircraft_db" in the backend directory
 
 ## Development
 
