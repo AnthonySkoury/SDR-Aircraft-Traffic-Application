@@ -234,6 +234,17 @@ To start the web app, use `npm start` and it should be located on localhost:3000
 * in the backend directory, run "sudo docker ps"
 * if need be, run "sudo docker restart aircraft_db" in the backend directory
 
+## System Design
+
+### System Architecture
+Note that the database server in this system is in a Docker Container by default, though the server can be hosted any way as long as it's a PostgreSQL database with the default ports.
+![System Diagram](https://github.com/AnthonySkoury/SDR-Aircraft-Traffic-Application/blob/main/images/system_diagram_high_level.png?raw=true)
+
+### Database Design
+The following is the database design which would be the details of the PostgreSQL database in the database server. These are the variables and attributes stored as well as their relationship. The data records have a foreign key referencing an aircraft in the aircraft table.
+![Database Diagram](https://github.com/AnthonySkoury/SDR-Aircraft-Traffic-Application/blob/main/images/db_diagram.png?raw=true)
+
+
 ## Development
 
 ### Tools Used
@@ -243,7 +254,7 @@ To start the web app, use `npm start` and it should be located on localhost:3000
 * [Docker](https://www.docker.com/) for database host
 * [PostgreSQL](https://www.postgresql.org/) for database used
 
-Knowledge and skills needed
+Knowledge and skills needed for developing
 
 * Programming Python, Javascript, HTML, CSS to some extent
 * General understanding of REST API framework
