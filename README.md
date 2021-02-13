@@ -71,7 +71,7 @@ To get an API key for the frontend (required for Google maps portion of frontend
 
 ## Manual Installation
 
-First [clone the repository](https://help.github.com/en/articles/cloning-a-repository) via Git using the following command
+First [clone the repository](https://help.github.com/en/articles/cloning-a-repository) via Git using the following command in your terminal
 ```bash
 git clone https://github.com/AnthonySkoury/SDR-Aircraft-Traffic-Application.git
 ```
