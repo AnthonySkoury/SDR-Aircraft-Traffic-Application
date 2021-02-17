@@ -47,9 +47,10 @@ Is issues persist with Dump1090 portion of install, refer to fixes in the sectio
 ```bash
 pipenv shell
 ```
-* if directory issues exist when running pip install pipenv, modify ~/.bashrc with the line
-* export PATH="/home/pi/.local/bin:$PATH"
-* at the end of the file
+* if directory issues exist when running pip install pipenv, modify ~/.bashrc with the following command
+```bash
+echo 'export PATH="${HOME}/.local/bin:$PATH"' >> ~/.bashrc
+```
 
 Install the requirements from the Pipfile:
 ```bash
@@ -58,7 +59,7 @@ pipenv sync
 Change directories into the backend to access the Django manager manage.py
 
 ```bash
-cd SDR-Aircraft-Traffic-Application/backend/
+cd backend/
 ```
 
 Create the database:
