@@ -13,13 +13,15 @@ import Container from 'react-bootstrap/Container'
 class AircraftData extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   data: [],
-    //   mapdata: [],
-    //   markers: [],
-    //   loaded: false,
-    //   placeholder: "Loading"
-    // };
+    console.log('props',this.props)
+    console.log(this.props.shownData)
+  }
+
+  componentDidUpdate() {
+    console.log('showndata',this.props.shownData)
+    let test = this.props.shownData
+    console.log(test.icao)
+    console.log(test.altitude)
   }
 
   // async componentDidMount() {
@@ -104,6 +106,18 @@ class AircraftData extends React.Component {
   render() {
     return (
       <Container fluid style={{ overflowY: 'auto', height: '41.5em', padding: '0', margin: '0', }}>
+
+      {this.props.shown && this.props.shownData
+        ?
+        <div>
+          <div>Showing Aircraft</div>
+          <div>ICAO: {this.props.shownData.icao}</div>
+          <div>Altitude: {this.props.shownData.altitude}</div>
+          <div>Track: {this.props.shownData.track}</div>
+        </div>
+        :
+        <div></div>
+      }
         <div>Aircraft Data</div>
         <br/>
           <div >

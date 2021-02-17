@@ -24,18 +24,25 @@ class MapContainer extends Component {
       },
       zoom: 11
     };
+    // this.props.showAircraft = this.props.showAircraft.bind(this)
+    this.handleshowAircraft = this.handleshowAircraft.bind(this);
+  }
+
+  handleshowAircraft(e) {
+    console.log('e is',e)
+    this.props.showAircraft(e)
   }
 
   componentDidUpdate() {
-    console.log('markers',this.props.markers)
-    console.log(this.props.markers[0].lon)
+    // console.log('markers',(this.props.markers !== null) && this.props.markers)
+    // console.log(this.props.markers !== null && this.props.markers[0].lon)
   }
 
   render() {
     return (
       <div style={{ height: '94vh', width: '100%' }}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: '' }}
+          bootstrapURLKeys={{ key: 'AIzaSyDeWQdLlMHZPAdXkUp1Gv72orwkEu6mKOY' }}
           defaultCenter={this.state.center}
           defaultZoom={this.state.zoom}
         >
@@ -46,6 +53,9 @@ class MapContainer extends Component {
                     lng={d.lon}
                     name={d.icao}
                     color = "blue"
+                    handleshowAircraft = {(e) => this.handleshowAircraft(e)}
+                    onClick={() => this.props.showAircraft('name')}
+                    // showAircraft = {this.props.showAircraft}
                 />
             );
           })}
