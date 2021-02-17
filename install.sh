@@ -4,8 +4,8 @@
 dt=$(date +"Date : %d/%m/%Y Time : %H:%M:%S");
 echo "Beginning script $dt"
 
-REPOSRC=https://github.com/AnthonySkoury/Air-Traffic-System.git
-LOCALREPO=Air-Traffic-System
+REPOSRC=https://github.com/AnthonySkoury/SDR-Aircraft-Traffic-Application.git
+LOCALREPO=SDR-Aircraft-Traffic-Application
 
 LOCALREPO_VC_DIR=$LOCALREPO/.git
 
@@ -18,21 +18,20 @@ curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
 
 # clone the repository
-if [ ! -d $LOCALREPO_VC_DIR ] && [ ! -d .git ]
-then
-    git clone $REPOSRC $LOCALREPO
-    cd $LOCALREPO
-else
-    cd $LOCALREPO
-    git pull $REPOSRC
-fi
+# if [ ! -d $LOCALREPO_VC_DIR ] && [ ! -d .git ]
+# then
+#     git clone $REPOSRC $LOCALREPO
+#     cd $LOCALREPO
+# else
+#     cd $LOCALREPO
+#     git pull $REPOSRC
+# fi
 
 # dump1090 setup
 sudo apt-get install rtl-sdr librtlsdr-dev
 cat librtlsdr.pc > /usr/lib/arm-linux-gnueabihf/pkgconfig/librtlsdr.pc
 cd decoder/RTL-SDR/dump1090
 make
-## edit file https://askubuntu.com/questions/148421/how-to-programmatically-edit-a-file-using-only-terminal
 cd ../../../
 
 # database setup
@@ -44,6 +43,9 @@ sudo apt-get install libpq-dev python-dev
 echo 'export PATH="${HOME}/.local/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc
 pip3 install --user --default-timeout=1000 pipenv
+sudo pip3 uninstall backports.functools-lru-cache
+sudo apt install python-backports.functools-lru-cache
+
 # pipenv sync
 # cd backend
 # python manage.py makemigrations
@@ -51,10 +53,13 @@ pip3 install --user --default-timeout=1000 pipenv
 # cd ..
 
 # front end setup
-## install node https://linuxize.com/post/how-to-install-node-js-on-raspberry-pi/
+install node https://linuxize.com/post/how-to-install-node-js-on-raspberry-pi/
 curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
 sudo apt install nodejs
 npx create-react-app my-app
 cd frontend
 npm install
 npm install google-map-react
+
+dt2=$(date +"Date : %d/%m/%Y Time : %H:%M:%S");
+echo "Finished script $dt2"
