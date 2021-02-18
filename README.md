@@ -47,8 +47,8 @@ Is issues persist with Dump1090 portion of install, refer to fixes in the sectio
 ```bash
 pipenv shell
 ```
-* if directory issues exist when running pip install pipenv, modify ~/.bashrc with the following command
-*```bash
+* Optional step if error occurs. If directory issues exist when running pip install pipenv, modify ~/.bashrc with the following command
+```bash
 echo 'export PATH="${HOME}/.local/bin:$PATH"' >> ~/.bashrc
 ```
 
