@@ -48,7 +48,7 @@ Is issues persist with Dump1090 portion of install, refer to fixes in the sectio
 pipenv shell
 ```
 * if directory issues exist when running pip install pipenv, modify ~/.bashrc with the following command
-```bash
+*```bash
 echo 'export PATH="${HOME}/.local/bin:$PATH"' >> ~/.bashrc
 ```
 
@@ -56,7 +56,7 @@ Install the requirements from the Pipfile:
 ```bash
 pipenv sync
 ```
-Change directories into the backend to access the Django manager manage.py
+When using the backend you must remain in the pipenv shell so that the virtual environment dependencies are registered. Change directories into the backend to access the Django manager manage.py
 
 ```bash
 cd backend/
