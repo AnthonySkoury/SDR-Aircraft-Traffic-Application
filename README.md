@@ -125,6 +125,7 @@ docker run --name aircraft_db -e POSTGRES_USER=aircraft_db -e POSTGRES_DB=aircra
 * cd into the SDR-Aircraft-Traffic-Application directory
 `cd SDR-Aircraft-Traffic-Application/`
  
+Ensure pipenv is installed and used for virtual environment dependencies in the backend.
 Get set up with the virtual environment for dependencies:
 ```bash
 echo 'export PATH="${HOME}/.local/bin:$PATH"' >> ~/.bashrc
@@ -132,9 +133,8 @@ source ~/.bashrc
 pip3 install --user --default-timeout=1000 pipenv
 pipenv shell
 ```
-* if directory issues exist when running pip install pipenv, modify ~/.bashrc with the line
-* export PATH="/home/pi/.local/bin:$PATH"
-* at the end of the file
+If issues persist an alternative install is with the following
+`sudo apt-get install pipenv`
 
 
 Install the requirements from the Pipfile:
@@ -233,6 +233,8 @@ If neither of these links work to view the pages from another device, it is poss
 
 ### Starting the frontend
 In a new window change directory to SDR-Aircraft-Traffic-Application/frontend
+
+Make sure you have ran `npm install` to install the required dependencies in the frontend directory if you haven't done so already
 
 To start the web app, use `npm start` and it should be located on localhost:3000
 
