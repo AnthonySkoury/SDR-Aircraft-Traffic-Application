@@ -47,11 +47,13 @@ Is issues persist with Dump1090 portion of install, refer to fixes in the sectio
 ```bash
 pipenv shell
 ```
-* Optional step if error occurs. If directory issues exist when running pip install pipenv, modify ~/.bashrc with the following command
+* Optional step if error occurs. If directory issues exist when running pip install pipenv, modify ~/.bashrc with the following command. Or install pipenv with the apt-get method using this command.
 ```bash
 echo 'export PATH="${HOME}/.local/bin:$PATH"' >> ~/.bashrc
 ```
-
+```
+sudo apt-get install pipenv
+```
 Install the requirements from the Pipfile:
 ```bash
 pipenv sync
@@ -123,8 +125,6 @@ docker run --name aircraft_db -e POSTGRES_USER=aircraft_db -e POSTGRES_DB=aircra
 * cd into the SDR-Aircraft-Traffic-Application directory
 `cd SDR-Aircraft-Traffic-Application/`
  
- Pipenv is required to use the virtual environment, you can install it using `pip install pipenv`
- 
 Get set up with the virtual environment for dependencies:
 ```bash
 echo 'export PATH="${HOME}/.local/bin:$PATH"' >> ~/.bashrc
@@ -194,6 +194,9 @@ For more information on getting a Google Maps API key, please refer to the Googl
 * For more information, please read the frontend README [here](https://github.com/AnthonySkoury/SDR-Aircraft-Traffic-Application/blob/main/frontend/README.md)
 
 ### Running the decoder and backend
+Make sure the Docker container for the database is running. It should be started by default when creating it the first time after running the install script. However, if it was stopped or your Raspberry Pi was turned off it can be started again with the following command. If permissions fail try with sudo. Refer to the README page in the backend directory for more info on Docker if needed.
+`docker start aircraft_db`
+
 Start the virtual environment
 
 `cd SDR-Aircraft-Traffic-Application`
@@ -230,8 +233,6 @@ If neither of these links work to view the pages from another device, it is poss
 
 ### Starting the frontend
 In a new window change directory to SDR-Aircraft-Traffic-Application/frontend
-
-Make sure you have ran `npm install` to install the required dependencies in the frontend directory if you haven't done so already
 
 To start the web app, use `npm start` and it should be located on localhost:3000
 
