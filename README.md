@@ -27,6 +27,7 @@ There are two methods of installation, with script (beta) and manual (tested). F
     ```bash
     sudo apt-get update
     sudo apt-get install build-essential git -y
+    sudo apt-get install pipenv
     ```
 
 ## Installation using script
