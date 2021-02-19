@@ -281,7 +281,7 @@ We use [Git](https://git-scm.com/) for versioning.
 
 * **Anthony Skoury** - *Computer Engineer* - [My Website](https://anthonyskoury.github.io/)
 * **Randall Cheng** - *Electrical Engineer, Computer Engineer*
-* **Alan Wong**
+* **Alan Wong** - *Computer Science & Engineering*
 
 ## License
 This project is licensed under the APGL_v3 License - see the [LICENSE.md](https://github.com/AnthonySkoury/SDR-Aircraft-Traffic-Application/blob/main/LICENSE) file for details
