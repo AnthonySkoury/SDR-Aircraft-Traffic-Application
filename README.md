@@ -211,7 +211,7 @@ Run `./dump1090 --interactive --net` to start dump1090
 
 In another window, change directory to SDR-Aircraft-Traffic-Application/decoder
 
-Run `python data_acquisition.py` to start the decoder
+Run `python3 data_acquisition.py` to start the decoder (uses a python3 library)
 
 ADS-B data should be recorded in the Django database
 
