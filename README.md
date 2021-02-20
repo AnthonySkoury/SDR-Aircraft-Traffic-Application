@@ -17,9 +17,9 @@ There are two methods of installation, with script (beta) and manual (tested). F
 * PlutoSDR (Plan to test)
 
 # General Usage Setup
-## Prerequisites
+## Prerequisites (*** IMPORTANT: IN ORDER TO HAVE NO ISSUE, README MUST BE COMPLETED STEP BY STEP, NO SKIPPING***)
 * RTL SDR
-* Raspberry Pi with Raspbian OS (**IMPORTANT DO NOT USE LITE VERSION OF RASPBIAN**)
+* Raspberry Pi with Raspbian OS (**IMPORTANT:THIS STEP MUST BE COMPLETED STEP BY STEP**)
   * To set up Raspberry Pi: 
     * Install [Raspberry Pi Imager](https://www.raspberrypi.org/software/) 
     * Follow this guide to flash Raspberry Pi OS onto your SD card: https://www.raspberrypi.org/documentation/installation/installing-images/
