@@ -90,7 +90,7 @@ For more information on getting a Google Maps API key, please refer to the Googl
 * The free tier currently allows up to 100 SMS messages a day
 * Obtain the access key and secret key for your account in the directions after setting up SNS
 * Edit the file in the backend directory `backend/backend_keys.txt`
-* Replace the first line with True, the second line with the access key, and the third line with the secret key
+* **Replace the first line with True, the second line with the access key, and the third line with the secret key, the fourth line with the region you chose in the dashboard for SNS (ex: us-west-2)**
 * The free tier currently allows up to 100 SMS messages a day
 * SNS currrently provides two options for SMS types: promotional and transactional, transactional being higher priority (usually less than 2s delay) so it is recommended here
 * **NOTE:** [if there are errors with the SNS service you may need to request access via a support ticket. Try $1 as the limit.](https://aws.amazon.com/premiumsupport/knowledge-center/sns-sms-spending-limit-increase/)

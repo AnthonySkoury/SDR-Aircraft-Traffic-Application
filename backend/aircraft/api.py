@@ -21,17 +21,19 @@ f = open(os.path.join(settings.BASE_DIR, 'backend_keys.txt'))
 enable = f.readline().rstrip('\n')
 if enable.lower() in ['true', '1', 't', 'y', 'yes']:
     notif_enabled = True
+    print("Notification Feature Enabled")
 
 if notif_enabled:
     key_id = f.readline().rstrip('\n')
     access_key = f.readline().rstrip('\n')
+    region = f.readline().rstrip('\n')
 
     # Create an SNS client
     client = boto3.client(
         "sns",
         aws_access_key_id=key_id,
         aws_secret_access_key=access_key,
-        region_name="us-west-2"
+        region_name=region
     )
 
 
