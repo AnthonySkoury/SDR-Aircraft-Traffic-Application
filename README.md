@@ -5,7 +5,7 @@ An air traffic system that uses an ADS-B receiver to obtain data.
 Please refer to here for more info on [ADS-B](https://www.faa.gov/nextgen/programs/adsb/faq/). Note that this system uses just receiving capabilities of software defined radios. It is illegal to transmit with a software defined radio without certain licenses, especially pertaining aircraft. Please refer [here](https://www.fcc.gov/wireless/bureau-divisions/mobility-division/amateur-radio-service) to learn about licenses that allow transmitting with radios.
 
 ## Note
-There are two methods of installation, with script (beta) and manual (tested). For more information on using each component or for troubleshooting, refer the manual installation sections and the README for each component.
+There are two methods of installation, with script (beta) and manual (tested). For more advanced documentation on each component, there is additional info in their directories.
 
 ## Hardware Tested
 ### Host Device
@@ -19,7 +19,7 @@ There are two methods of installation, with script (beta) and manual (tested). F
 # General Usage Setup
 ## Prerequisites
 * RTL SDR
-* Raspberry Pi with Raspbian
+* Raspberry Pi with Raspbian OS (**IMPORTANT DO NOT USE LITE VERSION OF RASPBIAN**)
   * To set up Raspberry Pi: 
     * Install [Raspberry Pi Imager](https://www.raspberrypi.org/software/) 
     * Follow this guide to flash Raspberry Pi OS onto your SD card: https://www.raspberrypi.org/documentation/installation/installing-images/
@@ -31,47 +31,124 @@ There are two methods of installation, with script (beta) and manual (tested). F
     ```
 
 ## Installation using script
-First [clone the repository](https://help.github.com/en/articles/cloning-a-repository) via Git using the following command and change into the directory
+**Step 1:** First [clone the repository](https://help.github.com/en/articles/cloning-a-repository) via Git using the following command and change into the directory
 ```bash
 git clone https://github.com/AnthonySkoury/SDR-Aircraft-Traffic-Application.git
 cd SDR-Aircraft-Traffic-Application
 ```
 
-Please use the files install.sh and librtlsdr.pc
+**Step 2:** Please use the files install.sh and librtlsdr.pc
 In the same directory with install.sh or in the root directory of the cloned repository (SDR-Aircraft-Traffic-Application) run the following command:
 ```bash
 sudo echo y | sudo ./install.sh |& sudo tee -a installation.log
 ```
-Is issues persist with Dump1090 portion of install, refer to fixes in the section below.
-**After installation, dependencies for the virtual environment for the backend must be synchronized by the user with these steps:**
-* Ensure you are in the root directory for the repo, SDR-Aircraft-Traffic-Application then run:
+Is issues persist with Dump1090 portion of install, refer to fixes in the section below.<br />
+**After installation, dependencies for the virtual environment for the backend must be synchronized by the user with these steps:** <br />
+**Step 3:** Ensure you are in the root directory for the repo, SDR-Aircraft-Traffic-Application then run:
 ```bash
 pipenv shell
 ```
-* Optional step if error occurs. If directory issues exist when running pip install pipenv, modify ~/.bashrc with the following command. Or install pipenv with the apt-get method using this command.
+**Optional step if error occurs.** If directory issues exist when running pip install pipenv, modify ~/.bashrc with the following command. Or install pipenv with the apt-get method using this command.
 ```bash
 echo 'export PATH="${HOME}/.local/bin:$PATH"' >> ~/.bashrc
 ```
-```
+```bash
 sudo apt-get install pipenv
 ```
-Install the requirements from the Pipfile:
+**Step 4:** Install the requirements from the Pipfile:
 ```bash
 pipenv sync
 ```
-When using the backend you must remain in the pipenv shell so that the virtual environment dependencies are registered. Change directories into the backend to access the Django manager manage.py
-
+**When using the backend you must remain in the pipenv shell so that the virtual environment dependencies are registered. The database in the Docker container must also be running, it is started by default after running the install script** <br />
+**Step 5:** Change directories into the backend to access the Django manager manage.py 
 ```bash
 cd backend/
 ```
 
-Create the database:
+**Step 6:**  Create the database:
 
 ```bash
 python manage.py migrate
 ```
-### Starting each component
-To get an API key for the frontend (required for Google maps portion of frontend) refer to the following instructions [Obtaining a Google Maps API Key](https://github.com/AnthonySkoury/SDR-Aircraft-Traffic-Application#starting-the-frontend). To run the decoder and backend refer to these [instructions](https://github.com/AnthonySkoury/SDR-Aircraft-Traffic-Application#running-the-decoder-and-backend). To start the frontend component refer to these [instructions](https://github.com/AnthonySkoury/SDR-Aircraft-Traffic-Application#starting-the-frontend). For more information, refer to  the README of each component (in the directory of each).
+
+**Step 7:**  Obtaining API Keys <br />
+The frontend uses a Google Maps API key for the flight visualizer and the backend uses an AWS key for the SMS notification feature. In order to use these two features the API keys must be obtained. <br /><br />
+**Obtaining a Google Maps API Key**
+
+Go to the [Google Cloud Platform Console](https://console.cloud.google.com/apis/credentials?authuser=0&_ga=2.126357261.1224200343.1612121726-26711352.1612121726) and create a new project
+
+You may have to create a new account and link your credit card to access the free tier. Google provides $200 of monthly credit and it only costs @2 per 1000 requests.
+
+In the credentials tab, click on the "Create Credentials" button and select "API Key"
+
+In the `frontend/src/map/Map.js` file, add the API key to the value of key in `bootstrapURLKeys={{ key: '' }}`.
+
+For more information on getting a Google Maps API key, please refer to the Google docs [here](https://developers.google.com/maps/documentation/javascript/get-api-key) <br /><br />
+**Obtaining an AWS API Key for SNS (in construction)** <br />
+* [Before following the steps to get started with SNS, note which region is closest to you from this list so you select that for your region in AWS dashboard when following the SNS setup](https://docs.aws.amazon.com/sns/latest/dg/sns-supported-regions-countries.html)
+* [Follow these steps provided by AWS for getting access to SNS](https://docs.aws.amazon.com/sns/latest/dg/sns-setting-up.html)
+* The free tier currently allows up to 100 SMS messages a day
+* Obtain the access key and secret key for your account in the directions after setting up SNS
+* Edit the file in the backend directory `backend/backend_keys.txt`
+* Replace the first line with True, the second line with the access key, and the third line with the secret key
+* The free tier currently allows up to 100 SMS messages a day
+* SNS currrently provides two options for SMS types: promotional and transactional, transactional being higher priority (usually less than 2s delay) so it is recommended here
+* **NOTE:** [if there are errors with the SNS service you may need to request access via a support ticket. Try $1 as the limit.](https://aws.amazon.com/premiumsupport/knowledge-center/sns-sms-spending-limit-increase/)
+
+**Step 8:** That clears the installation setup, refer to below to use system <br />
+
+## Running each Component
+In order to run the system, each component must be started in the following order: database, backend, dump1090, decoder, frontend
+
+### Running the database, backend, dump1090, and decoder
+Make sure the Docker container for the database is running. It should be started by default when creating it the first time after running the install script. However, if it was stopped or your Raspberry Pi was turned off it can be started again with the following command. If permissions fail try with sudo. Refer to the README page in the backend directory for more info on Docker if needed.
+`docker start aircraft_db`
+
+To use the backend, the virtual environment must be running. If it isn't started already, start the virtual environment
+
+```bash
+pipenv shell
+```
+
+Run the development server:
+
+Change directory to SDR-Aircraft-Traffic-Application/backend
+```bash
+python manage.py runserver
+```
+
+**NOTE:** Dump1090 in this repository is a fork of [Malcom Robb's dump1090](https://github.com/MalcolmRobb/dump1090) with a modification to add a HTTP header "Last-Modified" to discern duplicates. That is why the one in the repo must be used. <br />
+Change directory to SDR-Aircraft-Traffic-Application/decoder/RTL-SDR/dump1090
+
+Run `./dump1090 --interactive --net` to start dump1090
+
+In another window, change directory to SDR-Aircraft-Traffic-Application/decoder
+
+Run `python3 data_acquisition.py` to start the decoder (uses a python3 library)
+
+ADS-B data should be recorded in the Django database
+
+You can view this in at 127.0.0.1:8000 or http://localhost:8000 in your browser
+
+In order to allow the backend to listen on other devices in your network:
+`python manage.py runserver 0.0.0.0:8000`
+You can view the database by accessing the address of your http://{$RASPBERRYPI_IP_ADDRESS}:8000/
+
+Similarly, the line below in AircraftData.js in /frontend/src/aircraft_data/ needs to be changed to the IP address of your Raspberry Pi
+`const res = await fetch("http://{$RASPBERRYPI_IP_ADDRESS}:8000/api/aircraftdata/")`
+
+If neither of these links work to view the pages from another device, it is possible there is a firewall issue in your network. However, the links are still accessible on the Raspberry Pi itself, with the option of using localhost instead of the IP address on your Raspberry Pi's browser.
+
+### Running the frontend
+In a new window change directory to SDR-Aircraft-Traffic-Application/frontend
+
+Make sure you have ran `npm install` to install the required dependencies in the frontend directory if you haven't done so already
+
+To start the web app, use `npm start` and it should be located on localhost:3000
+
+* if issues arise, check the docker
+* in the backend directory, run "sudo docker ps"
+* if need be, run "sudo docker restart aircraft_db" in the backend directory
 
 ## Manual Installation
 
@@ -194,54 +271,6 @@ For more information on getting a Google Maps API key, please refer to the Googl
 
 * For more information, please read the frontend README [here](https://github.com/AnthonySkoury/SDR-Aircraft-Traffic-Application/blob/main/frontend/README.md)
 
-### Running the decoder and backend
-Make sure the Docker container for the database is running. It should be started by default when creating it the first time after running the install script. However, if it was stopped or your Raspberry Pi was turned off it can be started again with the following command. If permissions fail try with sudo. Refer to the README page in the backend directory for more info on Docker if needed.
-`docker start aircraft_db`
-
-Start the virtual environment
-
-`cd SDR-Aircraft-Traffic-Application`
-
-`pipenv shell`
-
-Run the development server:
-
-Change directory to SDR-Aircraft-Traffic-Application/backend
-```bash
-python manage.py runserver
-```
-
-Change directory to SDR-Aircraft-Traffic-Application/decoder/RTL-SDR/dump1090
-
-Run `./dump1090 --interactive --net` to start dump1090
-
-In another window, change directory to SDR-Aircraft-Traffic-Application/decoder
-
-Run `python3 data_acquisition.py` to start the decoder (uses a python3 library)
-
-ADS-B data should be recorded in the Django database
-
-You can view this in at 127.0.0.1:8000 or http://localhost:8000 in your browser
-
-In order to allow the backend to listen on other devices in your network:
-`python manage.py runserver 0.0.0.0:8000`
-You can view the database by accessing the address of your http://{$RASPBERRYPI_IP_ADDRESS}:8000/
-
-Similarly, the line below in AircraftData.js in /frontend/src/aircraft_data/ needs to be changed to the IP address of your Raspberry Pi
-`const res = await fetch("http://{$RASPBERRYPI_IP_ADDRESS}:8000/api/aircraftdata/")`
-
-If neither of these links work to view the pages from another device, it is possible there is a firewall issue in your network. However, the links are still accessible on the Raspberry Pi itself, with the option of using localhost instead of the IP address on your Raspberry Pi's browser.
-
-### Starting the frontend
-In a new window change directory to SDR-Aircraft-Traffic-Application/frontend
-
-Make sure you have ran `npm install` to install the required dependencies in the frontend directory if you haven't done so already
-
-To start the web app, use `npm start` and it should be located on localhost:3000
-
-* if issues arise, check the docker
-* in the backend directory, run "sudo docker ps"
-* if need be, run "sudo docker restart aircraft_db" in the backend directory
 
 ## System Design
 
