@@ -17,7 +17,7 @@ There are two methods of installation, with script (beta) and manual (tested). F
 * PlutoSDR (Plan to test)
 
 # General Usage Setup
-## Prerequisites (*** IMPORTANT: IN ORDER TO HAVE NO ISSUE, README MUST BE COMPLETED STEP BY STEP, NO SKIPPING***)
+## Prerequisites (*** IMPORTANT: TO HAVE NO ISSUE, EACH STEP OF THE README MUST BE COMPLETED, NO SKIPPING***)
 * RTL SDR
 * Raspberry Pi with Raspbian OS (**IMPORTANT:THIS STEP MUST BE COMPLETED STEP BY STEP**)
   * To set up Raspberry Pi: 
