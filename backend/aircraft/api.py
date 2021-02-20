@@ -4,10 +4,57 @@ from rest_framework.response import Response
 # from rest_framework.decorators import action
 
 from .serializers import AircraftSerializer, DataRecordSerializer, AircraftDataSerializer, UserNotificationSerializer
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Q
+import boto3 # for AWS SNS
+import os
+from django.conf import settings
+from decimal import Decimal
 # from django.http import FileResponse
 
 # Viewsets are used as the interface between the users with the data models/tables
+
+# Feature flag for AWS SMS notification system
+notif_enabled = False
+
+# get keys for AWS
+f = open(os.path.join(settings.BASE_DIR, 'backend_keys.txt'))
+enable = f.readline().rstrip('\n')
+if enable.lower() in ['true', '1', 't', 'y', 'yes']:
+    notif_enabled = True
+
+if notif_enabled:
+    key_id = f.readline().rstrip('\n')
+    access_key = f.readline().rstrip('\n')
+
+    # Create an SNS client
+    client = boto3.client(
+        "sns",
+        aws_access_key_id=key_id,
+        aws_secret_access_key=access_key,
+        region_name="us-west-2"
+    )
+
+
+def send_sms(number, msg):
+    # Send sms message
+    client.publish(
+        PhoneNumber=number,
+        Message=msg
+    )
+
+def check_notif(long, lat):
+
+    res = UserNotification.objects.filter(Q(latitude1__lte=lat, longitude1__lte=long, latitude2__gte=lat, longitude2__gte=long) | Q(latitude1__gte=lat, longitude1__gte=long, latitude2__lte=lat, longitude2__lte=long))
+    if len(res) != 0:
+        print("Notifying users")
+        for notif in res:
+            number = str(notif.phone)
+            long1 = str(notif.longitude1)
+            lat1 = str(notif.latitude1)
+            long2 = str(notif.longitude2)
+            lat2 = str(notif.latitude2)
+            msg = "An aircraft was detected in the region bound lat1,long1 ("+lat1+","+long1+") and lat2,long2 ("+lat2+","+long2+")."
+            send_sms(number, msg)
 
 
 def get_query(request):
@@ -63,7 +110,7 @@ class AircraftViewSet(viewsets.ModelViewSet):
     def create(self, request, pk=None, company_pk=None, project_pk=None):
         # Check if the request data is a list or a single object
         is_many = isinstance(request.data, list)
-
+        
         serializer = self.get_serializer(data=request.data, many=is_many)
         serializer.is_valid(raise_exception=True)
         # Insert data after serializing
@@ -88,6 +135,11 @@ class DataRecordViewSet(viewsets.ModelViewSet):
         # Check if the request data is a list or a single object
         is_many = isinstance(request.data, list)
 
+        if not is_many and notif_enabled:
+            print(type(request), request)
+            print(type(request.data), request.data)
+            check_notif(Decimal(request.data['longitude']), Decimal(request.data['latitude']))
+        
         serializer = self.get_serializer(data=request.data, many=is_many)
         serializer.is_valid(raise_exception=True)
         # Insert data after serializing

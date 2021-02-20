@@ -1,1 +1,1 @@
-These are the images used in READMEs for this repository.
+This directory holds all the images used in the repository READMEs.

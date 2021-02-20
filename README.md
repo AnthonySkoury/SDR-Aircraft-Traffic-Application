@@ -47,18 +47,19 @@ Is issues persist with Dump1090 portion of install, refer to fixes in the sectio
 ```bash
 pipenv shell
 ```
-* if directory issues exist when running pip install pipenv, modify ~/.bashrc with the line
-* export PATH="/home/pi/.local/bin:$PATH"
-* at the end of the file
+* Optional step if error occurs. If directory issues exist when running pip install pipenv, modify ~/.bashrc with the following command
+```bash
+echo 'export PATH="${HOME}/.local/bin:$PATH"' >> ~/.bashrc
+```
 
 Install the requirements from the Pipfile:
 ```bash
 pipenv sync
 ```
-Change directories into the backend to access the Django manager manage.py
+When using the backend you must remain in the pipenv shell so that the virtual environment dependencies are registered. Change directories into the backend to access the Django manager manage.py
 
 ```bash
-cd SDR-Aircraft-Traffic-Application/backend/
+cd backend/
 ```
 
 Create the database:
@@ -71,7 +72,7 @@ To get an API key for the frontend (required for Google maps portion of frontend
 
 ## Manual Installation
 
-First [clone the repository](https://help.github.com/en/articles/cloning-a-repository) via Git using the following command
+First [clone the repository](https://help.github.com/en/articles/cloning-a-repository) via Git using the following command in your terminal
 ```bash
 git clone https://github.com/AnthonySkoury/SDR-Aircraft-Traffic-Application.git
 ```
@@ -234,6 +235,17 @@ To start the web app, use `npm start` and it should be located on localhost:3000
 * in the backend directory, run "sudo docker ps"
 * if need be, run "sudo docker restart aircraft_db" in the backend directory
 
+## System Design
+
+### System Architecture
+Note that the database server in this system is in a Docker Container by default, though the server can be hosted any way as long as it's a PostgreSQL database with the default ports.
+![System Diagram](https://github.com/AnthonySkoury/SDR-Aircraft-Traffic-Application/blob/main/images/system_diagram_high_level.png?raw=true)
+
+### Database Design
+The following is the database design which would be the details of the PostgreSQL database in the database server. These are the variables and attributes stored as well as their relationship. The data records have a foreign key referencing an aircraft in the aircraft table.
+![Database Diagram](https://github.com/AnthonySkoury/SDR-Aircraft-Traffic-Application/blob/main/images/db_diagram.png?raw=true)
+
+
 ## Development
 
 ### Tools Used
@@ -243,7 +255,7 @@ To start the web app, use `npm start` and it should be located on localhost:3000
 * [Docker](https://www.docker.com/) for database host
 * [PostgreSQL](https://www.postgresql.org/) for database used
 
-Knowledge and skills needed
+Knowledge and skills needed for developing
 
 * Programming Python, Javascript, HTML, CSS to some extent
 * General understanding of REST API framework
