@@ -4,6 +4,8 @@ An air traffic system that uses an ADS-B receiver to obtain data.
 ## Disclaimer
 Please refer to here for more info on [ADS-B](https://www.faa.gov/nextgen/programs/adsb/faq/). Note that this system uses just receiving capabilities of software defined radios. It is illegal to transmit with a software defined radio without certain licenses, especially pertaining aircraft. Please refer [here](https://www.fcc.gov/wireless/bureau-divisions/mobility-division/amateur-radio-service) to learn about licenses that allow transmitting with radios.
 
+(***IMPORTANT: TO HAVE NO ISSUE, EACH STEP OF THE README MUST BE COMPLETED CHRONOLOGICALLY, NO SKIPPING OR USING OTHER COMMANDS***)
+
 ## Note
 There are two methods of installation, with script (beta) and manual (tested). For more advanced documentation on each component, there is additional info in their directories.
 
@@ -17,9 +19,9 @@ There are two methods of installation, with script (beta) and manual (tested). F
 * PlutoSDR (Plan to test)
 
 # General Usage Setup
-## Prerequisites
+## Prerequisites 
 * RTL SDR
-* Raspberry Pi with Raspbian OS (**IMPORTANT DO NOT USE LITE VERSION OF RASPBIAN**)
+* Raspberry Pi with Raspbian OS (**IMPORTANT:THIS STEP MUST BE COMPLETED STEP BY STEP**)
   * To set up Raspberry Pi: 
     * Install [Raspberry Pi Imager](https://www.raspberrypi.org/software/) 
     * Follow this guide to flash Raspberry Pi OS onto your SD card: https://www.raspberrypi.org/documentation/installation/installing-images/
