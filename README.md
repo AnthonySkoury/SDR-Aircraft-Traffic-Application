@@ -116,6 +116,7 @@ Change directory to SDR-Aircraft-Traffic-Application/backend
 ```bash
 python manage.py runserver
 ```
+**For more information on Docker commands for the database and exporting the database refer to the backend documentation [here.](https://github.com/AnthonySkoury/SDR-Aircraft-Traffic-Application/tree/main/backend)**<br />
 
 **NOTE:** Dump1090 in this repository is a fork of [Malcom Robb's dump1090](https://github.com/MalcolmRobb/dump1090) with a modification to add a HTTP header "Last-Modified" to discern duplicates. That is why the one in the repo must be used. <br />
 Change directory to SDR-Aircraft-Traffic-Application/decoder/RTL-SDR/dump1090
@@ -126,7 +127,7 @@ In another window, change directory to SDR-Aircraft-Traffic-Application/decoder
 
 Run `python3 data_acquisition.py` to start the decoder (uses a python3 library)
 
-ADS-B data should be recorded in the Django database
+ADS-B data should be recorded in the Django database.
 
 You can view this in at 127.0.0.1:8000 or http://localhost:8000 in your browser
 
