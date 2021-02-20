@@ -27,6 +27,7 @@ There are two methods of installation, with script (beta) and manual (tested). F
     ```bash
     sudo apt-get update
     sudo apt-get install build-essential git -y
+    sudo apt-get install pipenv
     ```
 
 ## Installation using script
@@ -47,11 +48,13 @@ Is issues persist with Dump1090 portion of install, refer to fixes in the sectio
 ```bash
 pipenv shell
 ```
-* Optional step if error occurs. If directory issues exist when running pip install pipenv, modify ~/.bashrc with the following command
+* Optional step if error occurs. If directory issues exist when running pip install pipenv, modify ~/.bashrc with the following command. Or install pipenv with the apt-get method using this command.
 ```bash
 echo 'export PATH="${HOME}/.local/bin:$PATH"' >> ~/.bashrc
 ```
-
+```
+sudo apt-get install pipenv
+```
 Install the requirements from the Pipfile:
 ```bash
 pipenv sync
@@ -123,6 +126,7 @@ docker run --name aircraft_db -e POSTGRES_USER=aircraft_db -e POSTGRES_DB=aircra
 * cd into the SDR-Aircraft-Traffic-Application directory
 `cd SDR-Aircraft-Traffic-Application/`
  
+Ensure pipenv is installed and used for virtual environment dependencies in the backend.
 Get set up with the virtual environment for dependencies:
 ```bash
 echo 'export PATH="${HOME}/.local/bin:$PATH"' >> ~/.bashrc
@@ -130,9 +134,8 @@ source ~/.bashrc
 pip3 install --user --default-timeout=1000 pipenv
 pipenv shell
 ```
-* if directory issues exist when running pip install pipenv, modify ~/.bashrc with the line
-* export PATH="/home/pi/.local/bin:$PATH"
-* at the end of the file
+If issues persist an alternative install is with the following
+`sudo apt-get install pipenv`
 
 
 Install the requirements from the Pipfile:
@@ -192,6 +195,9 @@ For more information on getting a Google Maps API key, please refer to the Googl
 * For more information, please read the frontend README [here](https://github.com/AnthonySkoury/SDR-Aircraft-Traffic-Application/blob/main/frontend/README.md)
 
 ### Running the decoder and backend
+Make sure the Docker container for the database is running. It should be started by default when creating it the first time after running the install script. However, if it was stopped or your Raspberry Pi was turned off it can be started again with the following command. If permissions fail try with sudo. Refer to the README page in the backend directory for more info on Docker if needed.
+`docker start aircraft_db`
+
 Start the virtual environment
 
 `cd SDR-Aircraft-Traffic-Application`
@@ -211,7 +217,7 @@ Run `./dump1090 --interactive --net` to start dump1090
 
 In another window, change directory to SDR-Aircraft-Traffic-Application/decoder
 
-Run `python data_acquisition.py` to start the decoder
+Run `python3 data_acquisition.py` to start the decoder (uses a python3 library)
 
 ADS-B data should be recorded in the Django database
 
@@ -228,6 +234,8 @@ If neither of these links work to view the pages from another device, it is poss
 
 ### Starting the frontend
 In a new window change directory to SDR-Aircraft-Traffic-Application/frontend
+
+Make sure you have ran `npm install` to install the required dependencies in the frontend directory if you haven't done so already
 
 To start the web app, use `npm start` and it should be located on localhost:3000
 
@@ -273,7 +281,7 @@ We use [Git](https://git-scm.com/) for versioning.
 
 * **Anthony Skoury** - *Computer Engineer* - [My Website](https://anthonyskoury.github.io/)
 * **Randall Cheng** - *Electrical Engineer, Computer Engineer*
-* **Alan Wong**
+* **Alan Wong** - *Computer Science & Engineering*
 
 ## License
 This project is licensed under the APGL_v3 License - see the [LICENSE.md](https://github.com/AnthonySkoury/SDR-Aircraft-Traffic-Application/blob/main/LICENSE) file for details

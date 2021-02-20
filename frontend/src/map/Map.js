@@ -24,7 +24,6 @@ class MapContainer extends Component {
       },
       zoom: 11
     };
-    // this.props.showAircraft = this.props.showAircraft.bind(this)
     this.handleshowAircraft = this.handleshowAircraft.bind(this);
   }
 
@@ -42,7 +41,7 @@ class MapContainer extends Component {
     return (
       <div style={{ height: '94vh', width: '100%' }}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: 'AIzaSyDeWQdLlMHZPAdXkUp1Gv72orwkEu6mKOY' }}
+          bootstrapURLKeys={{ key: '' }}
           defaultCenter={this.state.center}
           defaultZoom={this.state.zoom}
         >
@@ -61,34 +60,8 @@ class MapContainer extends Component {
           })}
         </GoogleMapReact>
       </div>
-      // always set container height explicitly
-      // <div style={{ height: '92vh', width: '100%' }}>
-      //     <GoogleMapReact
-      //       bootstrapURLKeys={{ key: 'AIzaSyDeWQdLlMHZPAdXkUp1Gv72orwkEu6mKOY' }}
-      //       defaultCenter={this.state.center}
-      //       defaultZoom={this.state.zoom}
-      //     >
-      //       <AnyReactComponent
-      //         lat={33.955413}
-      //         lng={-117.337844}
-      //         text="My Marker"
-      //       />
-      //     </GoogleMapReact>
-      //   </div>
     );
   }
 }
 
 export default MapContainer
-
-
-// <div style={{ height: '100vh !important', width: '100%'}}>
-//   <Container>
-//     <Map
-//       google={this.props.google}
-//       zoom={8}
-//       style={mapStyles}
-//       initialCenter={{ lat: 33.68, lng: -117.82}}
-//     />
-//   </Container>
-// </div>
