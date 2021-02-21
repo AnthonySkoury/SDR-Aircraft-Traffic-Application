@@ -40,6 +40,7 @@ docker run --name aircraft_db -e POSTGRES_USER=aircraft_db -e POSTGRES_DB=aircra
 
 # backend setup
 sudo apt-get install libpq-dev python-dev
+sudo apt-get install pipenv
 echo 'export PATH="${HOME}/.local/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc
 pip3 install --user --default-timeout=1000 pipenv
