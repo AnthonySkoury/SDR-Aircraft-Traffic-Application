@@ -1,5 +1,5 @@
 # SDR-Aircraft-Traffic-Application
-An air traffic system that uses an ADS-B receiver to obtain data.
+An air traffic system that uses an ADS-B receiver to obtain data. To install refer to the prerequistes and install guide below and the [install video here](https://www.youtube.com/watch?v=vFvFbYot_xk).
 
 ## Disclaimer
 Please refer to here for more info on [ADS-B](https://www.faa.gov/nextgen/programs/adsb/faq/). Note that this system uses just receiving capabilities of software defined radios. It is illegal to transmit with a software defined radio without certain licenses, especially pertaining aircraft. Please refer [here](https://www.fcc.gov/wireless/bureau-divisions/mobility-division/amateur-radio-service) to learn about licenses that allow transmitting with radios.
@@ -20,7 +20,7 @@ There are two methods of installation, with script (beta) and manual (tested). F
 
 # General Usage Setup
 ## Prerequisites 
-* RTL SDR
+* RTL SDR plugged into Raspberry Pi
 * Raspberry Pi with Raspbian OS (**IMPORTANT:THIS STEP MUST BE COMPLETED STEP BY STEP**)
   * To set up Raspberry Pi: 
     * Install [Raspberry Pi Imager](https://www.raspberrypi.org/software/) 
@@ -71,6 +71,12 @@ cd backend/
 ```bash
 python manage.py migrate
 ```
+**Optional step if error occurs.** If a psycopg2 error occurs like in the install video, the version is outdated. Stay in the pipenv shell and run the following 3 commands to fix. After running the commands to reinstall, run step 6 again then move onto step 7.
+```bash
+pip uninstall psycopg2
+pip uninstall psycopg2-binaray
+pip install psycopg2-binary
+```
 
 **Step 7:**  Obtaining API Keys <br />
 The frontend uses a Google Maps API key for the flight visualizer and the backend uses an AWS key for the SMS notification feature. In order to use these two features the API keys must be obtained. <br /><br />
@@ -82,12 +88,15 @@ You may have to create a new account and link your credit card to access the fre
 
 In the credentials tab, click on the "Create Credentials" button and select "API Key"
 
+This [video tutorial](https://youtu.be/1JNwpp5L4vM) may help in obtaining the Google Maps API key.
+
 In the `frontend/src/map/Map.js` file, add the API key to the value of key in `bootstrapURLKeys={{ key: '' }}`.
 
 For more information on getting a Google Maps API key, please refer to the Google docs [here](https://developers.google.com/maps/documentation/javascript/get-api-key) <br /><br />
 **Obtaining an AWS API Key for SNS (in construction)** <br />
 * [Before following the steps to get started with SNS, note which region is closest to you from this list so you select that for your region in AWS dashboard when following the SNS setup](https://docs.aws.amazon.com/sns/latest/dg/sns-supported-regions-countries.html)
 * [Follow these steps provided by AWS for getting access to SNS](https://docs.aws.amazon.com/sns/latest/dg/sns-setting-up.html)
+* This [video tutorial](https://youtu.be/MvUdqXI-s7g?t=62) may help in setting up SNS and obtaining the necessary keys since it is a similar idea. 
 * The free tier currently allows up to 100 SMS messages a day
 * Obtain the access key and secret key for your account in the directions after setting up SNS
 * Edit the file in the backend directory `backend/backend_keys.txt`
@@ -102,8 +111,10 @@ For more information on getting a Google Maps API key, please refer to the Googl
 In order to run the system, each component must be started in the following order: database, backend, dump1090, decoder, frontend
 
 ### Running the database, backend, dump1090, and decoder
-Make sure the Docker container for the database is running. It should be started by default when creating it the first time after running the install script. However, if it was stopped or your Raspberry Pi was turned off it can be started again with the following command. If permissions fail try with sudo. Refer to the README page in the backend directory for more info on Docker if needed.
-`docker start aircraft_db`
+Make sure the Docker container for the database is running. It should be started by default when creating it the first time after running the install script. However, if it was stopped or your Raspberry Pi was turned off it can be started again with the following command. If permissions fail try with sudo at the front. Refer to documentation in the backend directory for more info on Docker if needed. <br />
+```bash
+docker start aircraft_db
+```
 
 To use the backend, the virtual environment must be running. If it isn't started already, start the virtual environment
 
@@ -122,7 +133,7 @@ python manage.py runserver
 **NOTE:** Dump1090 in this repository is a fork of [Malcom Robb's dump1090](https://github.com/MalcolmRobb/dump1090) with a modification to add a HTTP header "Last-Modified" to discern duplicates. That is why the one in the repo must be used. <br />
 Change directory to SDR-Aircraft-Traffic-Application/decoder/RTL-SDR/dump1090
 
-Run `./dump1090 --interactive --net` to start dump1090
+Run `./dump1090 --interactive --net` to start dump1090 (if permissions error occur retry with sudo at the front)
 
 In another window, change directory to SDR-Aircraft-Traffic-Application/decoder
 
@@ -321,5 +332,5 @@ This project is licensed under the APGL_v3 License - see the [LICENSE.md](https:
 ## Acknowledgments
 
 * Professor Peter Burke for advising us
-* Authors for all the Open-Source Libraries used in this program
+* Authors for all the Open-Source Libraries used in this program and the author of Dump1090
 * Anyone who develops this project further
