@@ -9,6 +9,7 @@ import boto3 # for AWS SNS
 import os
 from django.conf import settings
 from decimal import Decimal
+import datetime
 # from django.http import FileResponse
 
 # Viewsets are used as the interface between the users with the data models/tables
@@ -22,6 +23,10 @@ enable = f.readline().rstrip('\n')
 if enable.lower() in ['true', '1', 't', 'y', 'yes']:
     notif_enabled = True
     print("Notification Feature Enabled")
+
+# Global variables for notif feature
+sent_times = {}
+time_limit = 60
 
 if notif_enabled:
     key_id = f.readline().rstrip('\n')
@@ -45,18 +50,35 @@ def send_sms(number, msg):
     )
 
 def check_notif(long, lat):
-
     res = UserNotification.objects.filter(Q(latitude1__lte=lat, longitude1__lte=long, latitude2__gte=lat, longitude2__gte=long) | Q(latitude1__gte=lat, longitude1__gte=long, latitude2__lte=lat, longitude2__lte=long))
+
     if len(res) != 0:
         print("Notifying users")
+        global sent_times
+
         for notif in res:
-            number = str(notif.phone)
-            long1 = str(notif.longitude1)
-            lat1 = str(notif.latitude1)
-            long2 = str(notif.longitude2)
-            lat2 = str(notif.latitude2)
-            msg = "An aircraft was detected in the region bound lat1,long1 ("+lat1+","+long1+") and lat2,long2 ("+lat2+","+long2+")."
-            send_sms(number, msg)
+            # for every triggered notif, check if it's been greater than a minute since a notif was already sent (to avoid spamming SMS)
+            cur_time = datetime.datetime.utcnow()
+            valid_time = False
+
+            # check time limit
+            if notif in sent_times:
+                time_passed = cur_time - sent_times[notif]
+                if time_passed.total_seconds() > time_limit:
+                    valid_time = True
+
+            if notif not in sent_times or valid_time:
+                print("Notified user")
+                started_at = datetime.datetime.utcnow()
+                number = str(notif.phone)
+                long1 = str(notif.longitude1)
+                lat1 = str(notif.latitude1)
+                long2 = str(notif.longitude2)
+                lat2 = str(notif.latitude2)
+                msg = "An aircraft was detected in the region bound lat1,long1 ("+lat1+","+long1+") and lat2,long2 ("+lat2+","+long2+")."
+                send_sms(number, msg)
+                sent_times[notif] = cur_time
+
 
 
 def get_query(request):
@@ -136,10 +158,9 @@ class DataRecordViewSet(viewsets.ModelViewSet):
     def create(self, request, pk=None, company_pk=None, project_pk=None):
         # Check if the request data is a list or a single object
         is_many = isinstance(request.data, list)
-
         if not is_many and notif_enabled:
-            print(type(request), request)
-            print(type(request.data), request.data)
+            # print(type(request), request)
+            # print(type(request.data), request.data)
             check_notif(Decimal(request.data['longitude']), Decimal(request.data['latitude']))
         
         serializer = self.get_serializer(data=request.data, many=is_many)
