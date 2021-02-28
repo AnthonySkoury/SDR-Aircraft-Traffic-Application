@@ -49,7 +49,7 @@ def send_sms(number, msg):
         Message=msg
     )
 
-def check_notif(long, lat):
+def check_notif(icao, altitude, ground_speed, vertical_rate, track, long, lat):
     res = UserNotification.objects.filter(Q(latitude1__lte=lat, longitude1__lte=long, latitude2__gte=lat, longitude2__gte=long) | Q(latitude1__gte=lat, longitude1__gte=long, latitude2__lte=lat, longitude2__lte=long))
 
     if len(res) != 0:
@@ -75,7 +75,7 @@ def check_notif(long, lat):
                 lat1 = str(notif.latitude1)
                 long2 = str(notif.longitude2)
                 lat2 = str(notif.latitude2)
-                msg = "An aircraft was detected in the region bound lat1,long1 ("+lat1+","+long1+") and lat2,long2 ("+lat2+","+long2+")."
+                msg = "An aircraft with icao "+icao+" was detected in the region bound lat1,long1 ("+lat1+","+long1+") and lat2,long2 ("+lat2+","+long2+"). Lat,Long: ("+str(lat)+","+str(long)+"), Altitude: "+altitude+" ft, Ground Speed: "+ground_speed+" knots, Vertical Speed: "+vertical_rate+" ft/min, Track Angle: "+track+" degrees."
                 send_sms(number, msg)
                 sent_times[notif] = cur_time
 
@@ -161,7 +161,7 @@ class DataRecordViewSet(viewsets.ModelViewSet):
         if not is_many and notif_enabled:
             # print(type(request), request)
             # print(type(request.data), request.data)
-            check_notif(Decimal(request.data['longitude']), Decimal(request.data['latitude']))
+            check_notif(request.data['icao'], request.data['altitude'], request.data['ground_speed'], request.data['vertical_rate'], request.data['track'], Decimal(request.data['longitude']), Decimal(request.data['latitude']))
         
         serializer = self.get_serializer(data=request.data, many=is_many)
         serializer.is_valid(raise_exception=True)
